@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computational Physics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../../style/codehilite/css/default.css" rel="stylesheet">
+    <link href="../../../style/misc/css/module.css" rel="stylesheet">
+    <link href="../../../style/misc/css/practical.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<script type="text/javascript"
+	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+  </head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			
+			
+	    	<div class="collapse navbar-collapse">
+
+				<ul class="nav navbar-nav navbar-left">
+					<!-- Moodle -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.wit.ie/course/view.php?id=200963" target="_blank"><img height="18pt" src="../../../style/misc/img/moodle_logo_on_blue.gif" /></a>
+						</div>						
+					</li>
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.wit.ie/course/view.php?id=200963" target="_blank"><img height="18pt" src="../../../style/misc/img/slack_logo.png" /></a>
+						</div>						
+					</li>
+				</ul>
+
+	      		<ul class="nav navbar-nav navbar-right">
+
+					<!-- module home -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../../../index.html"><span class="glyphicon glyphicon-home"></span></a>
+						</div>						
+					</li>
+					
+					<!-- topics -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-list-alt"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Topics</li>
+										
+										<li >
+											<a href="../../../topics/01-Exploratory_Data_Analysis/index.html">Exploratory Data Analysis</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/02-Computational_Problems_Involving_Probability/index.html">Computational Problems Involving Probability</a>
+										</li>
+										
+										<li class="active">
+											<a href="../../../topics/03-Cellular_Automata/index.html">Cellular Automata</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/04-Computational_Problems_involving_Marko_Chains/index.html">Computational Problems involving Marko Chains</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/05-Computational_Problems_involving_Monte_Carlo_techniques/index.html">Computational Problems involving Monte Carlo techniques</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+					<!-- resources -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-th-list"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Resources</li>
+										
+										<li class="active">
+											<a href="../../../topics/03-Cellular_Automata/index.html#01-Forest_Fire">Forest Fire</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+								
+					<!-- pages-->
+	        		<li>
+						<div class="navbar-collapse collapse" id="c">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span>Outline</span
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										
+										<li class="active">
+											<a href="00-Outline.html">Outline</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li> 
+					
+	        	</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- contents -->
+	<div class="container">
+		
+		<ul class="pager">
+			
+			<li class="previous disabled"><a>&larr; Previous</a></li>
+			
+			
+			
+			<li class="next disabled"><a>Next &rarr;</a></li>
+			
+		</ul>
+		
+		<h1>Forest Fire</h1>
+<p>Our simulation depends on multiple parameters --- the size of the grid, the initial distribution of cell types, the fire spread and burn rates (probabilities).  We need to run simulations for reasonable values of the different parameters to understand their importance/impact.  Additionally, some of dependencies on parameters are stochastic so we may also need to rerun under same parameter values to estimate the effect of noise and if needed to average results over multiple runs.</p>
+<p>Below is the order I would carry out this process and the general principles that I would follow. I have covered this in more detail in labs.</p>
+<h2>Effect of noise</h2>
+<p>First, to show you noise (randomness) is an issue, run simulation with the following parameters</p>
+<p>\[
+    \begin{array}{l|ccccc}
+    {\small\bf Parameter} &amp; m &amp; n 
+        &amp; \text{fires} 
+        &amp; \Pr(\text{burnable}\to\text{burning})
+        &amp; \Pr(\text{burning}\to\text{burnt})\\\hline
+    {\small\bf Value} &amp; 10 &amp; 20 &amp; 1 &amp; 1.0 &amp; 0.2
+    \end{array}
+\]</p>
+<p>Running with \(\text{seed}=2\) we get </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nv">At</span><span class="w"> </span><span class="k">end</span>,<span class="w"> </span><span class="nv">there</span><span class="w"> </span><span class="nv">are</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">unburnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">       </span><span class="mi">143</span><span class="w"> </span><span class="nv">burnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">burning</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">1</span><span class="w"> </span><span class="nv">burnt</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="nv">Fire</span><span class="w"> </span><span class="nv">damage</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="mi">0</span>.<span class="mi">0</span><span class="o">%</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+
+<p>Running with \(\text{seed}=29\) we get </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nv">At</span><span class="w"> </span><span class="k">end</span>,<span class="w"> </span><span class="nv">there</span><span class="w"> </span><span class="nv">are</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">unburnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">9</span><span class="w"> </span><span class="nv">burnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">burning</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">       </span><span class="mi">135</span><span class="w"> </span><span class="nv">burnt</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="nv">Fire</span><span class="w"> </span><span class="nv">damage</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="mi">93</span>.<span class="mi">7</span><span class="o">%</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+
+<p>So </p>
+<ul>
+<li>Noise plays a huge part in our simulations</li>
+<li>We need to re-run simulations multiple times (how many) and average results.</li>
+</ul>
+<p>Running above simulation a number of times and generate the following histogram </p>
+<figure>
+  <img src="files/damage_hist.png" alt="Forest" width="80%" >
+  <figcaption>Distribution of fire damage under above simulation parameters.</figcaption>
+</figure>
+
+<p>So what is this saying?  There two most likely outcomes --- either the fire burns out before it gets started, or manages to get going and consumes most of the forest.  </p>
+<p>So how many simulations run do we need to average over? the more we use the better but the more we use the more computational effort is needed. The following graph shows the effect of sample size on the average damage.</p>
+<figure>
+  <img src="files/damage_sample_size.png" alt="Forest" width="80%" >
+  <figcaption>Effect of sample size (number of simulations) on average fire damage (under above simulation parameters).</figcaption>
+</figure>
+
+<p>Looking at the above a sample size of 50 seems to be good enough, but if simulation time is slow we might drop back to 20 or even 10.</p>
+<h2>Effect of grid size</h2>
+<figure>
+  <img src="files/damage_grid.png" alt="Forest" width="80%" >
+  <figcaption>Effect of grid size on average fire damage.</figcaption>
+</figure>
+
+<p>From this we can conclude that a grid size of 15--20 seems to work well, so the default of \(10\times 20\) is probably big enough for our purposes.</p>
+<h2>Effect of fire spread and burn rates (probabilities)</h2>
+<p>For any given initial setup, the fire evolution depends on two rates/probabilities --- how easily the fire can spread to neighbouring burnable cells:
+\[
+    \text{spread rate}  = \Pr(\text{bunrable} \to \text{burning})
+\]
+and how long it takes for to burn all consumables in a burning cell:
+\[
+    \text{burn rate}  = \Pr(\text{buning} \to \text{burnt})
+\]</p>
+<p>Note: we probably should have called this <code>burnout rate</code>, but so be it.</p>
+<p>There are some extreme cases that we can predict, such as</p>
+<ul>
+<li>very low spread rate and high burn rate will tend to result in a fire burning itself out before spreading.</li>
+<li>very high spread rate and low burn rate will tends to result in a fire spreading the entire forest.</li>
+</ul>
+<p>But what for what values do these extreme cases occur? and what happens for intermediate parameter values?</p>
+<figure>
+  <img src="files/damage_fire_rates.png" alt="Forest" width="80%" >
+  <figcaption>Effect of fire rate parameters on average fire damage.</figcaption>
+</figure>
+
+<p>Looking at both rate parameters individually, for various levels of the other rate parameter we have</p>
+<figure>
+  <img src="files/damage_burn_rate_by_spread_rate.png" alt="Forest" width="45%" >
+  <img src="files/damage_spread_rate_by_burn_rate.png" alt="Forest" width="45%" >
+  <figcaption>Effect of fire individual rate parameters on average fire damage.</figcaption>
+</figure>
+
+<p>From above diagrams we see </p>
+<ul>
+<li>For catastrophic fire damage (say 60% or greater) a fire burn rate less than 20% is needed (i.e. lots of combustible fuel per cell) and a while a high spread rate is more likely to result in a catastrophic fire, this parameter can be small as long and the burn rate satisfies the empirical formula</li>
+</ul>
+<p>\[
+    \text{burn rate} &lt; \frac{\text{spread rate}}{10}
+\]</p>
+<p>So what does this mean in practical terms? Well we can't modify the spread rate but we can affect the burn rate.  See <a href="http://www.fao.org/3/t9500e/t9500e07.htm">Prescribed burning in the southern United States</a> for a management strategy based on limiting the amount of biomas/fuel (i.e. raising the burn rate). In a realistic situtation one would need some way to map the (observable) level of biomas to a burn rate (this is a curve fitting exercise).</p>
+<h2>Effect of unburnable cells density</h2>
+<figure>
+  <img src="files/damage_unburnable_density.png" alt="Forest" width="80%" >
+  <figcaption>Effect of unburnable cell density on average fire damage.</figcaption>
+</figure>
+
+<p>For very low densities (&lt;20%) the relationship appears to be linear, but it becomes asymptotic to the horizontal axis for larger densities.</p>
+<h2>Application to a real forest</h2>
+<p>Finally, you are going to apply your model to a real forest. The following figure is a satellite image of a forest (source Quartieri:2014). This is quite different from the artificial forest we built above in the distribution of  unburnable and burnable cells. For this setup, we are interested in given this forest, what is the impact of the fire spread and burn rates for a fire starting in the centre of the forest (i.e the centre of the image).</p>
+<p>You are going to estimate the probability of a fire consuming the </p>
+<figure>
+  <img src="files/island.png" alt="Forest" width="80%" >
+  <figcaption>Satellite image of a real forest.</figcaption>
+</figure>
+
+<p>This is a \(195\times 304\) image in RGBA format (each channel in range 0...1). The following code reads in the image, output its dimensions, and displays the image as above.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">forest</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;island.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">forest</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">forest</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Getting the forest (burnable) regions is relatively easy --- I just took the green channel </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">forest</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+
+<p>and picked a threshold value of 0.4. You could try other values if you wish.
+(I had hoped to estimate slope/height from how bright the forest regions are but that is too difficult.) Make sure you convert result from boolean to int otherwise you might have problems later. </p>
+<figure>
+  <img src="files/forest_initial.png" alt="Forest" width="80%" >
+  <figcaption>Satellite image of a real forest.</figcaption>
+</figure>
+
+<p>I also used the <strong>resize</strong> function from</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">skimage.transform</span> <span class="kn">import</span> <span class="n">resize</span>
+</code></pre></div></td></tr></table></div>
+
+<p>to reduce the size of the image when testing. Since the dimension are nearly in ratio 2:3, I rescaled to 100x150 and 50x75. As discussed in labs I modified <strong>model_setup</strong> so that it accepts extra parameter <strong>image=None</strong> and</p>
+<ul>
+<li>if <strong>image==None</strong> then setups up grid as before.</li>
+<li>if <strong>image!=None</strong> then set <strong>model</strong> to be a copy of <strong>image</strong> and sets the border cells to be <strong>unburnable</strong>.</li>
+</ul>
+<p>Starting 10 random fires and fire spread and burn rate of
+\[
+    \Pr(\text{bunrable} \to \text{burning}) = 1.0
+    \qquad
+    \Pr(\text{buning} \to \text{burnt}) = 0.3
+\]
+we have </p>
+<figure>
+  <img src="files/forest_start.png" alt="Forest" width="45%" >
+  <img src="files/forest_end.png" alt="Forest" width="45%" >
+  <figcaption>Initial and end state on starting 10 random fires.</figcaption>
+</figure>
+
+<p>with summary</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nv">At</span><span class="w"> </span><span class="nv">start</span>,<span class="w"> </span><span class="nv">there</span><span class="w"> </span><span class="nv">are</span><span class="w"></span>
+<span class="w">     </span><span class="mi">18529</span><span class="w"> </span><span class="nv">unburnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">     </span><span class="mi">39747</span><span class="w"> </span><span class="nv">burnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">        </span><span class="mi">10</span><span class="w"> </span><span class="nv">burning</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">burnt</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="nv">At</span><span class="w"> </span><span class="k">end</span>,<span class="w"> </span><span class="nv">there</span><span class="w"> </span><span class="nv">are</span><span class="w"></span>
+<span class="w">     </span><span class="mi">18529</span><span class="w"> </span><span class="nv">unburnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">     </span><span class="mi">13746</span><span class="w"> </span><span class="nv">burnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">burning</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">     </span><span class="mi">26011</span><span class="w"> </span><span class="nv">burnt</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="nv">Fire</span><span class="w"> </span><span class="nv">damage</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="mi">65</span>.<span class="mi">4</span><span class="o">%</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Deliverable</h2>
+<p>ZIP archive with python scripts (and notebooks) that generate your version of all of the diagrams shown here.</p>
+<div class="pager">
+<a class="btn btn-primary btn-lg" target="_blank" href="https://moodle.wit.ie/mod/assign/view.php?id=3141600" role="button">Submit using Moodle</a>
+</div>
+		
+		<ul class="pager">
+			
+			<li class="previous disabled"><a>&larr; Previous</a></li>
+			
+			
+			
+			<li class="next disabled"><a>Next &rarr;</a></li>
+			
+		</ul>
+
+	</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../../style/bootstrap/js/bootstrap.min.js"></script>
+	
+  </body>
+</html>

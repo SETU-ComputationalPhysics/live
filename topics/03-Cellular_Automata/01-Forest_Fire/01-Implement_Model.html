@@ -128,7 +128,7 @@
 							<ul class="nav navbar-nav">
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-										<span>Outline</span
+										<span>Implement Model</span
 									</a>
 									<ul class="dropdown-menu" role="menu">
 										
@@ -136,11 +136,11 @@
 											<a href="00-Outline copy.html">Outline copy</a>
 										</li>
 										
-										<li class="active">
+										<li >
 											<a href="00-Outline.html">Outline</a>
 										</li>
 										
-										<li >
+										<li class="active">
 											<a href="01-Implement_Model.html">Implement Model</a>
 										</li>
 										
@@ -168,39 +168,62 @@
 		
 		<ul class="pager">
 			
-			<li class="previous"><a href="00-Outline copy.html">&larr; Previous (Outline copy)</a></li>
+			<li class="previous"><a href="00-Outline.html">&larr; Previous (Outline)</a></li>
 			
 			
 			
-			<li class="next"><a href="01-Implement_Model.html">Next (Implement Model) &rarr;</a></li>
+			<li class="next"><a href="02-Model_Performance.html">Next (Model Performance) &rarr;</a></li>
 			
 		</ul>
 		
-		<h1>Forest Fire</h1>
-<h2>Aim</h2>
-<p>In this assignment we are going to implement a Cellular Automata model to study the spread of a forest fire. The aim is to reproduce the work of</p>
-<p>A Cellular Automata Model for Fire Spreading Prediction (Quartieri:2010)</p>
-<p>but we will make slight changes to their model and will put more effort into examining the effects of the various model parameters.</p>
-<h2>Outline of Assignment</h2>
+		<h1>Model Decisions and Implementation</h1>
+<p>Following the discussion in 3 of Quartieri:2010 we want the following CA model</p>
+<p><strong>Space</strong></p>
 <ul>
-<li><a href="01-Implement_Model.html">Implement the CA model</a></li>
-<li><a href="02-Model_Performance.html">Understand the model &mdash; parameter dependence</a></li>
-<li><a href="03-Apply_Model.html">Apply model to real data</a></li>
+<li>2D, square grid</li>
+<li>Finite with boundaries $\implies$ will force dead zone along edge to simplify updates.</li>
 </ul>
-<h2>References</h2>
-<p>While you only need to read the Quartieri:2010 papar for this assignment I encourage you to scan the other references listed here.</p>
-<h2>Deliverable</h2>
-<div class="pager">
-<a class="btn btn-primary btn-lg" target="_blank" href="https://moodle.wit.ie/mod/assign/view.php?id=3141600" role="button">Submit using Moodle</a>
-</div>
+<p><strong>States</strong></p>
+<p>Slight reordering and relabeling of states from those given in paper. (TBH I have no good reason for this ☺️)</p>
+<ul>
+<li>unburnable (<code>UNBURNABLE=0</code>, white)</li>
+<li>burnable (<code>BURNABLE=0</code>, green) </li>
+<li>burning (<code>BURNING=0</code>, red)</li>
+<li>burnt (<code>BURNING=0</code>, black)</li>
+</ul>
+<p><strong>Neighbourhood</strong></p>
+<p>The paper uses Moore neighbourhood which treats all 8 neighbours with equal weight. This is reasonable, but one could argue that the diagonal neighbour cells (DN) are further away than (and so have less of an impact than) the adjacent cells (AN). However switching to a von Neumann neighbourhood is too extreme. So instead we will opt for a neighbourhood that is between Moore and von Neumann, by weighting input of 
+diagonal neighbour cells by $w=1/\sqrt{2}$.</p>
+<p>Our selection of neighbourhood has a consequence on the calculation of the probability of switching from state <code>BURNABLE</code> to <code>BURNING</code>. The paper used 
+$$
+    \Pr(\text{BURNABLE} \to \text{BURNING}) = \frac{N_b}{8}
+$$
+where $N_b$ is the number of neighbours in state <code>BURNING</code>.  We need to modify this formula along the lines of
+$$
+    \Pr(\text{BURNABLE} \to \text{BURNING}) = \frac{AN_b+DN_{b}/w}{4 + 4/w}
+$$</p>
+<p>where $AN_b$ is the number of adjacent neighbours in state <code>BURNING</code>, and
+$DN_b$ is the number of diagonal neighbours in state <code>BURNING</code>.</p>
+<p>We will investigate the impact of the value of our new parameter $w$.</p>
+<p><strong>Rules</strong></p>
+<p><code>UNBURNABLE</code> is a terminal state (never changes).</p>
+<p><code>BURNT</code> is a terminal state.</p>
+<p><code>BURNABLE</code> to <code>BURNING</code></p>
+<p>In addition to the above modification due to the neighbourhood change we will also include a probability term (or burn rate), which control how likely a cell will switch to <code>BURNING</code> when all neighbours are <code>BURNING</code>. So we have</p>
+<p>$$
+    \Pr(\text{BURNABLE} \to \text{BURNING}) = 
+    p_{\text{ignite}}
+    \left(\frac{AN_b+DN_{b}/w}{4 + 4/w}\right)
+$$</p>
+<p>So $p_{\text{ignite}}=1$ corresponds to paper model. Smaller values should slow fire spread and could be used to represent forest conditions such as wet fuel after rain etc.</p>
 		
 		<ul class="pager">
 			
-			<li class="previous"><a href="00-Outline copy.html">&larr; Previous (Outline copy)</a></li>
+			<li class="previous"><a href="00-Outline.html">&larr; Previous (Outline)</a></li>
 			
 			
 			
-			<li class="next"><a href="01-Implement_Model.html">Next (Implement Model) &rarr;</a></li>
+			<li class="next"><a href="02-Model_Performance.html">Next (Model Performance) &rarr;</a></li>
 			
 		</ul>
 

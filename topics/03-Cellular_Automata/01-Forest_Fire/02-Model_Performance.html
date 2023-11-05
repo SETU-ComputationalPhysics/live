@@ -176,7 +176,113 @@
 			
 		</ul>
 		
-		
+		<h1>Model Performance</h1>
+<p>Before we can use our model on real inputs we should evaluate it to determine if it is even plausable! Does it behave as one would expect? Does it depend on parameters in a manner that is consistent with expectations?   </p>
+<p>Our simulation depends on multiple parameters --- the size of the grid, the initial distribution of cell types, the fire spread and burn rates (probabilities).  We need to run simulations for reasonable values of the different parameters to understand their importance/impact.  Additionally, some of dependencies on parameters are stochastic so we may also need to rerun under same parameter values to estimate the effect of noise and if needed to average results over multiple runs.</p>
+<p>Below is the order I would carry out this process and the general principles that I would follow. </p>
+<h2>Effect of noise</h2>
+<p>First, to show that noise (randomness) is an issue, run simulation with the following parameters</p>
+<p>\[
+    \begin{array}{l|cccccc}
+    {\small\bf Parameter} &amp; m &amp; n 
+        &amp; \text{fires} 
+        &amp; w
+        &amp; p_{\text{ignition_rate}} 
+        &amp; p_{\text{burnout_rate}}
+        \\\hline
+    {\small\bf Value} &amp; 10 &amp; 20 &amp; 1 &amp; 1/\sqrt{2} &amp; 1.0 &amp; 0.2
+    \end{array}
+\]</p>
+<p>Running simulation with a sample of seeds, say </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">seeds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">706872</span><span class="p">,</span> <span class="mi">100613</span><span class="p">,</span> <span class="mi">2087648</span><span class="p">,</span> <span class="mi">1214833</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+
+<p>we get significantly different behaviour </p>
+<figure>
+  <img src="files/initial_and_final_samples.png" alt="Initial and final states for sample seeds" width="100%" >
+  <figcaption>Impact of random generator seed on simulation evolution.</figcaption>
+</figure>
+
+<p>So </p>
+<ul>
+<li>Noise plays a huge part in our simulations</li>
+<li>We need to re-run simulations multiple times (how many?) and average results.</li>
+</ul>
+<p class="alert alert-success"><strong>Task 1:</strong><br />
+Run the simulation with the above parameters a number of times and generate the following histogram.</p>
+<figure>
+  <img src="files/damage_hist.png" alt="Forest" width="80%" >
+  <figcaption>Distribution of fire damage under above simulation parameters.</figcaption>
+</figure>
+
+<p>So what is this saying?  Two distinct outcomes are dominant &mdash; either the fire burns out before it gets started, or it manages to get going and consumes most of the forest.  </p>
+<p>So how many simulations run do we need to average over? the more we use the better but the more we use the more computational effort is needed. </p>
+<p class="alert alert-success"><strong>Task 2:</strong><br />
+The following graph shows the average percentage damage by grouping 1000 samples points into groups of size 1, 10, 20, 50, and 100. Generate this graphic.</p>
+<figure>
+  <img src="files/damage_sample_size.png" alt="damage range and sample size" width="80%" >
+  <figcaption>Effect of sample size (number of simulations) on average fire damage (under above simulation parameters).</figcaption>
+</figure>
+
+<p><strong>Conclusion:</strong></p>
+<ul>
+<li>Looking at the above, a sample size of 50 seems to be good enough. However if simulation time is too slow we might drop back to a sample size of 20 or even 10.</li>
+</ul>
+<h2>Effect of grid size</h2>
+<figure>
+  <img src="files/damage_grid.png" alt="Forest" width="80%" >
+  <figcaption>Effect of grid size on average fire damage.</figcaption>
+</figure>
+
+<p>From this we can conclude that a grid size of 15--20 seems to work well, so the default of \(10\times 20\) is probably big enough for our purposes.</p>
+<h2>Effect of ignition rate and burnout rates</h2>
+<p>For any given initial setup, the fire evolution depends on two rates/probabilities --- how easily the fire can spread to neighbouring burnable cells:
+\[
+    \Pr(\text{burnable} \to \text{burning}) 
+    \text{ depends on } 
+    p_{\text{ignition_rate}}
+\]
+and how long it takes for to burn all consumables in a burning cell:
+\[
+    \Pr(\text{burning} \to \text{burnt})
+    \text{ depends on }
+    p_{\text{burnout_rate}}
+\]</p>
+<p>There are some extreme cases that we can predict, such as</p>
+<ul>
+<li>very low ignition rate and high burnout rate will tend to result in a fire burning itself out before spreading.</li>
+<li>very high ignition rate and low burnout rate will tends to result in a fire spreading the entire forest.</li>
+</ul>
+<p>But what for what values do these extreme cases occur? and what happens for intermediate parameter values?</p>
+<p class="alert alert-success"><strong>Task 2:</strong><br />
+Generate this graphic.</p>
+<figure>
+  <img src="files/damage_fire_rates.png" alt="Forest" width="80%" >
+  <figcaption>Effect of fire rate parameters on average fire damage.</figcaption>
+</figure>
+
+<p>Looking at both rate parameters individually, for various levels of the other rate parameter we have</p>
+<figure>
+  <img src="files/damage_burn_rate_by_spread_rate.png" alt="Forest" width="45%" >
+  <img src="files/damage_spread_rate_by_burn_rate.png" alt="Forest" width="45%" >
+  <figcaption>Effect of fire individual rate parameters on average fire damage.</figcaption>
+</figure>
+
+<p>From above diagrams we see </p>
+<ul>
+<li>For catastrophic fire damage (say 60% or greater) a fire burn rate less than 20% is needed (i.e. lots of combustible fuel per cell) and a while a high spread rate is more likely to result in a catastrophic fire, this parameter can be small as long and the burn rate satisfies the empirical formula</li>
+</ul>
+<p>\[
+    \text{burn rate} &lt; \frac{\text{spread rate}}{10}
+\]</p>
+<p>So what does this mean in practical terms? Well we can't modify the spread rate but we can affect the burn rate.  See <a href="http://www.fao.org/3/t9500e/t9500e07.htm">Prescribed burning in the southern United States</a> for a management strategy based on limiting the amount of biomas/fuel (i.e. raising the burn rate). In a realistic situtation one would need some way to map the (observable) level of biomas to a burn rate (this is a curve fitting exercise).</p>
+<h2>Effect of unburnable cells density</h2>
+<figure>
+  <img src="files/damage_unburnable_density.png" alt="Forest" width="80%" >
+  <figcaption>Effect of unburnable cell density on average fire damage.</figcaption>
+</figure>
+
+<p>For very low densities (&lt;20%) the relationship appears to be linear, but it becomes asymptotic to the horizontal axis for larger densities.</p>
 		
 		<ul class="pager">
 			

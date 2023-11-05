@@ -176,35 +176,40 @@
 			
 		</ul>
 		
-		<h1>Model Decisions and Implementation</h1>
-<p>Following the discussion in 3 of Quartieri:2010 we want the following CA model</p>
+		<h1>Model Development and Implementation</h1>
+<h2>Theory / Model</h2>
+<p>On reading the discussion in §3 of Quartieri:2010 we want the following CA model</p>
 <p><strong>Space</strong></p>
 <ul>
 <li>2D, square grid</li>
-<li>Finite with boundaries $\implies$ will force dead zone along edge to simplify updates.</li>
+<li>Finite with boundaries \(\implies\) will force dead zone along edge to simplify updates.</li>
 </ul>
 <p><strong>States</strong></p>
 <p>Slight reordering and relabeling of states from those given in paper. (TBH I have no good reason for this ☺️)</p>
 <ul>
 <li>unburnable (<code>UNBURNABLE=0</code>, white)</li>
-<li>burnable (<code>BURNABLE=0</code>, green) </li>
-<li>burning (<code>BURNING=0</code>, red)</li>
-<li>burnt (<code>BURNING=0</code>, black)</li>
+<li>burnable (<code>BURNABLE=1</code>, green) </li>
+<li>burning (<code>BURNING=2</code>, red)</li>
+<li>burnt (<code>BURNING=3</code>, black)</li>
 </ul>
 <p><strong>Neighbourhood</strong></p>
 <p>The paper uses Moore neighbourhood which treats all 8 neighbours with equal weight. This is reasonable, but one could argue that the diagonal neighbour cells (DN) are further away than (and so have less of an impact than) the adjacent cells (AN). However switching to a von Neumann neighbourhood is too extreme. So instead we will opt for a neighbourhood that is between Moore and von Neumann, by weighting input of 
-diagonal neighbour cells by $w=1/\sqrt{2}$.</p>
+diagonal neighbour cells by \(w=1/\sqrt{2}\).</p>
 <p>Our selection of neighbourhood has a consequence on the calculation of the probability of switching from state <code>BURNABLE</code> to <code>BURNING</code>. The paper used 
 $$
     \Pr(\text{BURNABLE} \to \text{BURNING}) = \frac{N_b}{8}
 $$
-where $N_b$ is the number of neighbours in state <code>BURNING</code>.  We need to modify this formula along the lines of
-$$
-    \Pr(\text{BURNABLE} \to \text{BURNING}) = \frac{AN_b+DN_{b}/w}{4 + 4/w}
-$$</p>
-<p>where $AN_b$ is the number of adjacent neighbours in state <code>BURNING</code>, and
-$DN_b$ is the number of diagonal neighbours in state <code>BURNING</code>.</p>
-<p>We will investigate the impact of the value of our new parameter $w$.</p>
+where \(N_b\) is the number of neighbours in state <code>BURNING</code>.  We need to modify this formula along the lines of
+\[
+    \Pr(\text{BURNABLE} \to \text{BURNING}) = \frac{AN_b+w \times DN_{b}}{4(1 + w)}
+\]</p>
+<p>where \(AN_b\) is the number of adjacent neighbours in state <code>BURNING</code>, and
+\(DN_b\) is the number of diagonal neighbours in state <code>BURNING</code>.</p>
+<p>We will investigate the impact of the value of our new parameter \(w\):</p>
+<ul>
+<li>\(w=1\) will give Moore</li>
+<li>\(w=0\) will give von Neumann</li>
+</ul>
 <p><strong>Rules</strong></p>
 <p><code>UNBURNABLE</code> is a terminal state (never changes).</p>
 <p><code>BURNT</code> is a terminal state.</p>
@@ -212,10 +217,99 @@ $DN_b$ is the number of diagonal neighbours in state <code>BURNING</code>.</p>
 <p>In addition to the above modification due to the neighbourhood change we will also include a probability term (or burn rate), which control how likely a cell will switch to <code>BURNING</code> when all neighbours are <code>BURNING</code>. So we have</p>
 <p>$$
     \Pr(\text{BURNABLE} \to \text{BURNING}) = 
-    p_{\text{ignite}}
-    \left(\frac{AN_b+DN_{b}/w}{4 + 4/w}\right)
+    p_{\text{ignition_rate}}
+    \left(\frac{AN_b+w\cdot DN_{b}}{4(1+w)}\right)
 $$</p>
-<p>So $p_{\text{ignite}}=1$ corresponds to paper model. Smaller values should slow fire spread and could be used to represent forest conditions such as wet fuel after rain etc.</p>
+<p>So \(p_{\text{ignition_rate}}=1\) corresponds to model in paper. Smaller values should slow fire spread and could be used to represent forest conditions such as wet fuel after rain etc.</p>
+<p><code>BURNING</code> to <code>BURNT</code></p>
+<p>The paper switches from state <code>BURNING</code> to <code>BURNT</code> after one time step (next stage). This is a bit simplistic and I would prefer a model that supported staying in <code>BURNING</code> for a number of time steps. We have two options here:</p>
+<ul>
+<li>we could include a counter in each cell to keep track of number of time steps it is in <code>BURNING</code> state. Extra data and extra code \(\implies\) don't like this.</li>
+<li>we could treat the switching from state <code>BURNING</code> to <code>BURNT</code> as a geometric random variable with probability of success \(p_{\text{burnout_rate}}\)</li>
+</ul>
+<p>We (you) are going to implement the geometric random variable approach and so we have</p>
+<p>$$
+    \Pr(\text{BURNING} \to \text{BURNT}) = p_{\text{burnout_rate}}
+$$</p>
+<p>To match paper we set \(p_{\text{burnout_rate}}=1\).</p>
+<p class="alert alert-warning">AFAIK there is an error in the paper in section 3.
+Bonus marks for first student to identify it.</p>
+<h2>Implementation</h2>
+<p>Mirroring our Game of Life implementation the basic model is implemented using</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">n_states</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">UNBURNABLE</span><span class="p">,</span> <span class="n">BURNABLE</span><span class="p">,</span> <span class="n">BURNING</span><span class="p">,</span> <span class="n">BURNT</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">)</span>
+<span class="n">state_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;unburnable&#39;</span><span class="p">,</span> <span class="s1">&#39;burnable&#39;</span><span class="p">,</span> <span class="s1">&#39;burning&#39;</span><span class="p">,</span> <span class="s1">&#39;burnt&#39;</span><span class="p">]</span>
+<span class="n">state_colors</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">])</span>
+
+<span class="n">stage</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cells</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">old_cells</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+
+<p>The following functions are needed to </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span> <span class="n">fires</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Create/Initialise fire CA model.</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    world : tuple or ndarray, optional</span>
+<span class="s2">        Dimensions for world if tuple is passed or initial state of world if ndarray.</span>
+
+<span class="s2">        If tuple then create world with given dimension and all cells are set to `BURNABLE` then pad a one cell width border of `UNBURNABLE`.</span>
+
+<span class="s2">        If ndarray then pad by one for border of `UNBURNABLE` cells.</span>
+
+<span class="s2">        If not given, defaults to (10,20)</span>
+
+<span class="s2">    fires : int or list or tuple</span>
+<span class="s2">        If int then stores number of `BURNABLE` cells to set to `BURNING`.</span>
+<span class="s2">        If list or tuple then stores locations of `BURNABLE` cells to set to `BURNING`, any locations that are not `BURNABLE` cells are ignored.</span>
+
+<span class="s2">    Returns</span>
+<span class="s2">    -------</span>
+<span class="s2">    alive : bool</span>
+<span class="s2">        True iff simulation has not yet reached terminal state.  </span>
+<span class="s2">        Terminal state is where there are no cells in state `BURNING`.</span>
+
+<span class="s2">    Notes</span>
+<span class="s2">    -----</span>
+<span class="s2">    Function updates global variables `cells`, `old_cells` and `stage`.</span>
+</code></pre></div></td></tr></table></div>
 		
 		<ul class="pager">
 			

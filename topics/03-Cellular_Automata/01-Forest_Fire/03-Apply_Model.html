@@ -176,7 +176,80 @@
 			
 		</ul>
 		
-		
+		<h2>Application to a Real Forest</h2>
+<p>Finally, you are going to apply your model to a real forest. The following figure is a satellite image of a forest (source Quartieri:2014). This is quite different from the artificial forest we built above in the distribution of unburnable and burnable cells. For this setup, we are interested in given this forest, what is the impact of the fire spread and burn rates for a fire starting in the centre of the forest (i.e the centre of the image).</p>
+<p>You are going to estimate the probability of a fire consuming the </p>
+<figure>
+  <img src="files/island.png" alt="Forest" width="80%" >
+  <figcaption>Satellite image of a real forest.</figcaption>
+</figure>
+
+<p>This is a \(195\times 304\) image in RGBA format (each channel in range 0...1). The following code reads in the image, output its dimensions, and displays the image as above.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">forest</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;island.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">forest</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">forest</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Getting the forest (burnable) regions is relatively easy --- I just took the green channel </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">forest</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+
+<p>and picked a threshold value of 0.4. You could try other values if you wish.
+(I had hoped to estimate slope/height from how bright the forest regions are but that is too difficult.) Make sure you convert result from boolean to int otherwise you might have problems later. </p>
+<figure>
+  <img src="files/forest_initial.png" alt="Forest" width="80%" >
+  <figcaption>Satellite image of a real forest.</figcaption>
+</figure>
+
+<p>I also used the <strong>resize</strong> function from</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">skimage.transform</span> <span class="kn">import</span> <span class="n">resize</span>
+</code></pre></div></td></tr></table></div>
+
+<p>to reduce the size of the image when testing. Since the dimension are nearly in ratio 2:3, I rescaled to 100x150 and 50x75. As discussed in labs I modified <strong>model_setup</strong> so that it accepts extra parameter <strong>image=None</strong> and</p>
+<ul>
+<li>if <strong>image==None</strong> then setups up grid as before.</li>
+<li>if <strong>image!=None</strong> then set <strong>model</strong> to be a copy of <strong>image</strong> and sets the border cells to be <strong>unburnable</strong>.</li>
+</ul>
+<p>Starting 10 random fires and fire spread and burn out rate of
+\[
+    w =1
+    \qquad
+    \Pr(\text{bunrable} \to \text{burning}) = 1.0
+    \qquad
+    \Pr(\text{buning} \to \text{burnt}) = 0.3
+\]
+we have </p>
+<figure>
+  <img src="files/forest_start.png" alt="Forest" width="45%" >
+  <img src="files/forest_end.png" alt="Forest" width="45%" >
+  <figcaption>Initial and end state on starting 10 random fires.</figcaption>
+</figure>
+
+<p>with summary</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nv">At</span><span class="w"> </span><span class="nv">start</span>,<span class="w"> </span><span class="nv">there</span><span class="w"> </span><span class="nv">are</span><span class="w"></span>
+<span class="w">     </span><span class="mi">18529</span><span class="w"> </span><span class="nv">unburnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">     </span><span class="mi">39747</span><span class="w"> </span><span class="nv">burnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">        </span><span class="mi">10</span><span class="w"> </span><span class="nv">burning</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">burnt</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="nv">At</span><span class="w"> </span><span class="k">end</span>,<span class="w"> </span><span class="nv">there</span><span class="w"> </span><span class="nv">are</span><span class="w"></span>
+<span class="w">     </span><span class="mi">18529</span><span class="w"> </span><span class="nv">unburnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">     </span><span class="mi">13746</span><span class="w"> </span><span class="nv">burnable</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="nv">burning</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="w">     </span><span class="mi">26011</span><span class="w"> </span><span class="nv">burnt</span><span class="w"> </span><span class="nv">cells</span><span class="w"></span>
+<span class="nv">Fire</span><span class="w"> </span><span class="nv">damage</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="mi">65</span>.<span class="mi">4</span><span class="o">%</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
 		
 		<ul class="pager">
 			

@@ -177,7 +177,7 @@
 		</ul>
 		
 		<h1>Model Performance</h1>
-<p>Before we can use our model on real inputs we should evaluate it to determine if it is even plausable! Does it behave as one would expect? Does it depend on parameters in a manner that is consistent with expectations?   </p>
+<p>Before we can use our model on real inputs we should evaluate it to determine if it is even plausible! Does it behave as one would expect? Does it depend on parameters in a manner that is consistent with expectations?   </p>
 <p>Our simulation depends on multiple parameters --- the size of the grid, the initial distribution of cell types, the fire spread and burn rates (probabilities).  We need to run simulations for reasonable values of the different parameters to understand their importance/impact.  Additionally, some of dependencies on parameters are stochastic so we may also need to rerun under same parameter values to estimate the effect of noise and if needed to average results over multiple runs.</p>
 <p>Below is the order I would carry out this process and the general principles that I would follow. </p>
 <h2>Effect of noise</h2>
@@ -229,12 +229,7 @@ The following graph shows the average percentage damage by grouping 1000 samples
 <li>Looking at the above, a sample size of 50 seems to be good enough. However if simulation time is too slow we might drop back to a sample size of 20 or even 10.</li>
 </ul>
 <h2>Effect of grid size</h2>
-<figure>
-  <img src="files/damage_grid.png" alt="Forest" width="80%" >
-  <figcaption>Effect of grid size on average fire damage.</figcaption>
-</figure>
-
-<p>From this we can conclude that a grid size of 15--20 seems to work well, so the default of \(10\times 20\) is probably big enough for our purposes.</p>
+<p>Ignore this</p>
 <h2>Effect of ignition rate and burnout rates</h2>
 <p>For any given initial setup, the fire evolution depends on two rates/probabilities --- how easily the fire can spread to neighbouring burnable cells:
 \[
@@ -254,14 +249,10 @@ and how long it takes for to burn all consumables in a burning cell:
 <li>very high ignition rate and low burnout rate will tends to result in a fire spreading the entire forest.</li>
 </ul>
 <p>But what for what values do these extreme cases occur? and what happens for intermediate parameter values?</p>
-<p class="alert alert-success"><strong>Task 2:</strong><br />
-Generate this graphic.</p>
-<figure>
-  <img src="files/damage_fire_rates.png" alt="Forest" width="80%" >
-  <figcaption>Effect of fire rate parameters on average fire damage.</figcaption>
-</figure>
-
+<p>We could do a 2D parameter sweep but this is computationaly expensive so we will vary one parameter while keeping the other fixed.</p>
 <p>Looking at both rate parameters individually, for various levels of the other rate parameter we have</p>
+<p class="alert alert-success"><strong>Task 3:</strong><br />
+Generate the followiing graphic.</p>
 <figure>
   <img src="files/damage_burn_rate_by_spread_rate.png" alt="Forest" width="45%" >
   <img src="files/damage_spread_rate_by_burn_rate.png" alt="Forest" width="45%" >
@@ -273,7 +264,7 @@ Generate this graphic.</p>
 <li>For catastrophic fire damage (say 60% or greater) a fire burn rate less than 20% is needed (i.e. lots of combustible fuel per cell) and a while a high spread rate is more likely to result in a catastrophic fire, this parameter can be small as long and the burn rate satisfies the empirical formula</li>
 </ul>
 <p>\[
-    \text{burn rate} &lt; \frac{\text{spread rate}}{10}
+    \text{burn out rate} &lt; \frac{\text{spread rate}}{10}
 \]</p>
 <p>So what does this mean in practical terms? Well we can't modify the spread rate but we can affect the burn rate.  See <a href="http://www.fao.org/3/t9500e/t9500e07.htm">Prescribed burning in the southern United States</a> for a management strategy based on limiting the amount of biomas/fuel (i.e. raising the burn rate). In a realistic situtation one would need some way to map the (observable) level of biomas to a burn rate (this is a curve fitting exercise).</p>
 <h2>Effect of unburnable cells density</h2>
@@ -283,6 +274,8 @@ Generate this graphic.</p>
 </figure>
 
 <p>For very low densities (&lt;20%) the relationship appears to be linear, but it becomes asymptotic to the horizontal axis for larger densities.</p>
+<p class="alert alert-success"><strong>Task 4:</strong><br />
+Generate the above graphic.</p>
 		
 		<ul class="pager">
 			

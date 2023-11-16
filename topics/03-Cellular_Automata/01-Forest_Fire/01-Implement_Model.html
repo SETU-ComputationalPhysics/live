@@ -190,7 +190,7 @@
 <li>unburnable (<code>UNBURNABLE=0</code>, white)</li>
 <li>burnable (<code>BURNABLE=1</code>, green) </li>
 <li>burning (<code>BURNING=2</code>, red)</li>
-<li>burnt (<code>BURNING=3</code>, black)</li>
+<li>burnt (<code>BURNT=3</code>, black)</li>
 </ul>
 <p><strong>Neighbourhood</strong></p>
 <p>The paper uses Moore neighbourhood which treats all 8 neighbours with equal weight. This is reasonable, but one could argue that the diagonal neighbour cells (DN) are further away than (and so have less of an impact than) the adjacent cells (AN). However switching to a von Neumann neighbourhood is too extreme. So instead we will opt for a neighbourhood that is between Moore and von Neumann, by weighting input of 
@@ -210,11 +210,13 @@ where \(N_b\) is the number of neighbours in state <code>BURNING</code>.  We nee
 <li>\(w=1\) will give Moore</li>
 <li>\(w=0\) will give von Neumann</li>
 </ul>
+<p class="alert alert-success"><strong>Note:</strong><br />
+Feel free to simplify your implementation so that it only uses \(w=1\).</p>
 <p><strong>Rules</strong></p>
 <p><code>UNBURNABLE</code> is a terminal state (never changes).</p>
 <p><code>BURNT</code> is a terminal state.</p>
 <p><code>BURNABLE</code> to <code>BURNING</code></p>
-<p>In addition to the above modification due to the neighbourhood change we will also include a probability term (or burn rate), which control how likely a cell will switch to <code>BURNING</code> when all neighbours are <code>BURNING</code>. So we have</p>
+<p>In addition to the above modification due to the neighbourhood change we will also include a probability term (or ignition rate), which control how likely a cell will switch to <code>BURNING</code> when neighbours are <code>BURNING</code>. So we have</p>
 <p>$$
     \Pr(\text{BURNABLE} \to \text{BURNING}) = 
     p_{\text{ignition_rate}}
@@ -232,7 +234,8 @@ $$</p>
     \Pr(\text{BURNING} \to \text{BURNT}) = p_{\text{burnout_rate}}
 $$</p>
 <p>To match paper we set \(p_{\text{burnout_rate}}=1\).</p>
-<p class="alert alert-warning">AFAIK there is an error in the paper in section 3.
+<p class="alert alert-warning"><strong>Note:</strong><br />
+AFAIK there is an error in the paper in section 3.
 Bonus marks for first student to identify it.</p>
 <h2>Implementation</h2>
 <p>Mirroring our Game of Life implementation the basic model is implemented using</p>
@@ -278,38 +281,156 @@ Bonus marks for first student to identify it.</p>
 <span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span> <span class="n">fires</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Create/Initialise fire CA model.</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">world</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span> <span class="n">fires</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create/Initialise fire CA model.</span>
 
-<span class="s2">    Parameters</span>
-<span class="s2">    ----------</span>
-<span class="s2">    world : tuple or ndarray, optional</span>
-<span class="s2">        Dimensions for world if tuple is passed or initial state of world if ndarray.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    world : tuple or np.ndarray, optional</span>
+<span class="sd">        Dimensions of world if tuple is passed or initial state of world if ndarray.</span>
 
-<span class="s2">        If tuple then create world with given dimension and all cells are set to `BURNABLE` then pad a one cell width border of `UNBURNABLE`.</span>
+<span class="sd">        If tuple then create `cells` with given dimension with all cells set </span>
+<span class="sd">        to `BURNABLE`.</span>
+<span class="sd">        If np.ndarray then `cells` is copy of image.</span>
 
-<span class="s2">        If ndarray then pad by one for border of `UNBURNABLE` cells.</span>
+<span class="sd">        Then pad cells by one cell width border of `UNBURNABLE` cells.</span>
 
-<span class="s2">        If not given, defaults to (10,20)</span>
+<span class="sd">    fires : int or list or tuple or np.ndarray</span>
+<span class="sd">        If int then stores number of `BURNABLE` cells to set to `BURNING`.</span>
 
-<span class="s2">    fires : int or list or tuple</span>
-<span class="s2">        If int then stores number of `BURNABLE` cells to set to `BURNING`.</span>
-<span class="s2">        If list or tuple then stores locations of `BURNABLE` cells to set to `BURNING`, any locations that are not `BURNABLE` cells are ignored.</span>
+<span class="sd">        If list or tuple or np.ndarray then stores locations of `BURNABLE` cells to set to </span>
+<span class="sd">        `BURNING`, any locations that are not `BURNABLE` cells are ignored.</span>
 
-<span class="s2">    Returns</span>
-<span class="s2">    -------</span>
-<span class="s2">    alive : bool</span>
-<span class="s2">        True iff simulation has not yet reached terminal state.  </span>
-<span class="s2">        Terminal state is where there are no cells in state `BURNING`.</span>
-
-<span class="s2">    Notes</span>
-<span class="s2">    -----</span>
-<span class="s2">    Function updates global variables `cells`, `old_cells` and `stage`.</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Function updates global variables `cells`, `old_cells`, and `stage`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display the current state as a 2D image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    duration : float, optional</span>
+<span class="sd">    Length of time (seconds) to display image. Not displayed if zero.</span>
+
+<span class="sd">    save : bool, optional</span>
+<span class="sd">    Save image to file &quot;fire /Fire_{stage:06d}.png&quot; (creates folder if needed).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The `UNBURNABLE` border is not displayed.</span>
+<span class="sd">    Axis labels are integers.</span>
+<span class="sd">    Function reads global variables `cells` and `stage`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">p_ignition_rate</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p_burnout_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evolve (step) the system forward one stage (time step).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    w : float, optional</span>
+<span class="sd">    Relative importance of diagonal neighbors.</span>
+
+<span class="sd">    p_ignition_rate : float, optional</span>
+<span class="sd">    Probability of cell igniting when all neighbors are `BURNING`.</span>
+
+<span class="sd">    p_burnout_rate : float, optional</span>
+<span class="sd">    Probability of `BURNING` cell switching to state `BURNT`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    alive : bool</span>
+<span class="sd">        True iff simulation has not yet reached terminal state.  </span>
+<span class="sd">        Terminal state is where there are no cells in state `BURNING`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Function updates global variables `cells`, `old_cells`, and `stage`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Output cell state counts and calculate fire damage percentage.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    output : float, optional</span>
+<span class="sd">    Print table of summary of cell state counts.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Function reads global variables `cells` and `stage`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Test your implementation</h2>
+<ul>
+<li>Follow approach used ini Game of Life<ul>
+<li>Use simple as possible initial conditions to identify issues with update rules.</li>
+<li>Vary parameters to ensure results are plausible.</li>
+</ul>
+</li>
+</ul>
 		
 		<ul class="pager">
 			

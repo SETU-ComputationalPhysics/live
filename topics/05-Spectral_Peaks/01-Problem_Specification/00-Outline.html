@@ -161,7 +161,7 @@
 		</ul>
 		
 		<h1>Assignment - Spectral Peaks</h1>
-<h2>Specification</h2>
+<h2>Aim</h2>
 <p>Given a data set representing the energy with respect to frequency, identify the location of any peaks and estimate the intensity (area within peak). The data is noisy and there is an underlying non-linear trend.</p>
 <figure>
   <img src="files/kmurphy.png" alt="" width="60%" >
@@ -171,6 +171,15 @@
 <p>You will need to</p>
 <ul>
 <li>Identify the trend. It could be linear, quadratic, or exponential.</li>
+</ul>
+<p>\[
+    bx + c
+    \qquad\mbox{or}\qquad
+    a x^2 + b x + c
+    \qquad\mbox{or}\qquad
+    a e^{b x} + c
+\]</p>
+<ul>
 <li>Identify number of peaks, and whether they are positive or negative.</li>
 <li>For each peak, estimate<ul>
 <li>The center</li>
@@ -179,84 +188,19 @@
 </ul>
 </li>
 </ul>
-<h2>Data files</h2>
-<p>The data set consists of two columns (frequency, energy) both are scaled so that</p>
+<h2>Dataset</h2>
+<p>Each data file consists of two columns (frequency, energy) both are scaled so that</p>
 <ul>
 <li>the input (frequency) is in the interval 0 to 1.</li>
 <li>the output (energy) is in the interval -5 to 5.</li>
 </ul>
-<p>I have two datasets that are common to all of you and three individual datasets each.  The common datasets are</p>
+<p>I have two data files that are common to all of you and four individual data files each.  The common data files are</p>
 <ul>
 <li><a href="files/01.png">01.png</a> <a href="files/01.txt">01.txt</a></li>
 <li><a href="files/02.png">02.png</a> <a href="files/02.txt">02.txt</a></li>
 </ul>
-<p>The individual datasets are determined by your student number. As per GDPR I should not publish your student number so instead you run the following code </p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;W00000000&quot;</span>
-<span class="kn">import</span> <span class="nn">hashlib</span><span class="o">,</span> <span class="nn">os</span>
-<span class="k">def</span> <span class="nf">name_to_seed</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span><span class="mi">16</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
-
-<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">]:</span>
-    <span class="n">problem</span> <span class="o">=</span> <span class="nb">id</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">p</span>
-    <span class="n">seed</span> <span class="o">=</span> <span class="n">name_to_seed</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;p-</span><span class="si">%010d</span><span class="s2">.txt&quot;</span> <span class="o">%</span> <span class="n">seed</span>
-
-    <span class="nb">print</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
-</code></pre></div></td></tr></table></div>
-
-<p>All of the images are in the <a href="files/individual.zip">ZIP</a> archive
-and some simpler data sets to aid your development</p>
-<ul>
-<li><a href="files/no_trend.png">no_trend.png</a> <a href="files/no_trend.txt">no_trend.txt</a></li>
-<li><a href="files/no_trend_no_noise.png">no_trend_no_noise.png</a> <a href="files/no_trend_no_noise.txt">no_trend_no_noise.txt</a></li>
-<li><a href="files/no_trend_no_noise_one_peak.png">no_trend_no_noise_one_peak.png</a> <a href="files/no_trend_no_noise_one_peak.txt">no_trend_no_noise_one_peak.txt</a></li>
-<li><a href="files/no_trend_no_noise_one_peak_wide.png">no_trend_no_noise_one_peak_wide.png</a> <a href="files/no_trend_no_noise_one_peak_wide.txt">no_trend_no_noise_one_peak_wide.txt</a></li>
-</ul>
-<h2>Deliverables</h2>
-<ol>
-<li>
-<p>Presentation (5 mins max), Guidelines given in class, but essentially you need</p>
-<ul>
-<li>State Problem</li>
-<li>Describe Approach</li>
-<li>Progress to date</li>
-<li>Define all symbols used, maxamise use of space on slides (especially for graphs).</li>
-<li>Annotate all graphs.</li>
-</ul>
-</li>
-<li>
-<p>Code used to generate results (either zip file of python script(s) or iPython notebook(s))</p>
-<ul>
-<li>Code must include a file called <strong>main.py</strong> which takes a single command line argument specifying the problem (no file extension) and <ul>
-<li>Outputs the trend </li>
-<li>Outputs the number of peaks, and for each peak the <ul>
-<li>centre, height, width, area</li>
-</ul>
-</li>
-<li>Saves the peak data to a CSV with columns (centre, height, width, area). 
-  There is no need to have a first row with the column headings.</li>
-<li>In the event of errors/issues in your algorithm, your code should output a sane (understandable message) and terminate.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<h3>An example</h3>
-<p>Running your script on the <strong>kmurphy</strong> problem as follows:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">python</span> <span class="n">main</span> <span class="n">kmurphy</span>
-</code></pre></div></td></tr></table></div>
-
-<p>should generate output </p>
+<p>The individual data files are determined by your student number. As per GDPR I should not publish your student number so instead you run the following code 
+with your student number.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -268,21 +212,127 @@ and some simpler data sets to aid your development</p>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
-<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">Trend</span><span class="o">:</span><span class="w"></span>
-<span class="w">    </span><span class="mf">0.788</span><span class="w"> </span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="mf">0.743</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1.271</span><span class="w"></span>
-<span class="n">Number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">peaks</span><span class="o">:</span><span class="w"> </span><span class="mi">9</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.1531</span><span class="w">    </span><span class="n">h</span><span class="o">=-</span><span class="mf">0.7521</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0149</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0075</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.2067</span><span class="w">    </span><span class="n">h</span><span class="o">=</span><span class="w"> </span><span class="mf">0.8480</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0149</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0085</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.2981</span><span class="w">    </span><span class="n">h</span><span class="o">=-</span><span class="mf">0.7943</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0158</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0084</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.3662</span><span class="w">    </span><span class="n">h</span><span class="o">=-</span><span class="mf">0.8079</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0153</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0083</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">4</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.4095</span><span class="w">    </span><span class="n">h</span><span class="o">=-</span><span class="mf">0.9745</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0150</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0098</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">5</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.5165</span><span class="w">    </span><span class="n">h</span><span class="o">=</span><span class="w"> </span><span class="mf">0.8225</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0167</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0092</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">6</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.7771</span><span class="w">    </span><span class="n">h</span><span class="o">=</span><span class="w"> </span><span class="mf">0.6280</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0185</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0078</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">7</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.8168</span><span class="w">    </span><span class="n">h</span><span class="o">=-</span><span class="mf">0.9164</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0111</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0068</span><span class="w"></span>
-<span class="w">    </span><span class="n">Peak</span><span class="w"> </span><span class="mi">8</span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mf">0.8676</span><span class="w">    </span><span class="n">h</span><span class="o">=-</span><span class="mf">0.9942</span><span class="w">    </span><span class="n">w</span><span class="o">=</span><span class="mf">0.0121</span><span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mf">0.0080</span><span class="w"></span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">hashlib</span><span class="o">,</span> <span class="nn">os</span>
+
+<span class="k">def</span> <span class="nf">list_dataset</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;W00000000&#39;</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">name_to_seed</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span><span class="mi">16</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">]:</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="nb">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">p</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">name_to_seed</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;p-</span><span class="si">{</span><span class="n">seed</span><span class="si">:</span><span class="s1">010d</span><span class="si">}</span><span class="s1">.txt&#39;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
 
-<p>and <a href="files/kmurphy.csv">CSV file</a>.</p>
+<p>All of the images are in the <a href="files/individual.zip">archive</a>.<br />
+I have also included some simpler data files which should help the development of your code.</p>
+<ul>
+<li><a href="files/no_trend.png">no_trend.png</a> <a href="files/no_trend.txt">no_trend.txt</a></li>
+<li><a href="files/no_trend_no_noise.png">no_trend_no_noise.png</a> <a href="files/no_trend_no_noise.txt">no_trend_no_noise.txt</a></li>
+<li><a href="files/no_trend_no_noise_one_peak.png">no_trend_no_noise_one_peak.png</a> <a href="files/no_trend_no_noise_one_peak.txt">no_trend_no_noise_one_peak.txt</a></li>
+<li><a href="files/no_trend_no_noise_one_peak_wide.png">no_trend_no_noise_one_peak_wide.png</a> <a href="files/no_trend_no_noise_one_peak_wide.txt">no_trend_no_noise_one_peak_wide.txt</a></li>
+</ul>
+<p>To use the data files in the <a href="files/individual.zip">archive</a>, you can use the following code which copies the archive to the same folder as your notebook and extracts contents to current folder. Note that it creates two folders</p>
+<ul>
+<li><code>data</code> &mdash; contains the data files (<em>.txt) and images of the spectral peaks (</em>.png).</li>
+<li><code>output</code> &mdash; empty folder that you will use for your output.</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://setu-computationalphysics.github.io/live/topics/05-Spectral_Peaks/01-Problem_Specification/files/individual.zip&#39;</span>
+
+<span class="kn">import</span> <span class="nn">urllib.request</span> 
+<span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;data.zip&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s1">&#39;data.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+    <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Required functions</h2>
+<p>Your notebook should have the function</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;kmurphy.txt&#39;</span><span class="p">,</span> <span class="n">ADD_YOUR_OTHER_ARGUMENTS_HERE_IF_WANTED</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+
+<p>which when passed the name of a <code>txt</code> file in <code>data</code> containing the data points:</p>
+<ul>
+<li>identifies the trend.</li>
+<li>identifies the peaks &mdash; center, height, width and area</li>
+<li>generates <code>txt</code> file saved to <code>output</code> folder summarising results (see next section for format).</li>
+<li>generates <code>csv</code> file saved to <code>output</code> folder summarising numerical results (see next section for format).</li>
+</ul>
+<h2>Output on Generating a Dataset</h2>
+<p>Each problem in folder <code>data</code> should generate two files in folder <code>output</code> with same basename.  The <a href="files/output_kmurphy.txt">txt</a> file should have contents like </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code>Trend:
+    -0.826 x^2 +0.437 x +1.188
+Number of peaks: 9
+    Peak 0: c=0.1531    h=-0.7210    w=0.0152    a=0.0073
+    Peak 1: c=0.2067    h= 0.8023    w=0.0161    a=0.0087
+    Peak 2: c=0.2981    h=-0.7538    w=0.0162    a=0.0082
+    Peak 3: c=0.3662    h=-0.7761    w=0.0165    a=0.0086
+    Peak 4: c=0.4095    h=-0.9409    w=0.0156    a=0.0098
+    Peak 5: c=0.5164    h= 0.7872    w=0.0178    a=0.0094
+    Peak 6: c=0.7771    h= 0.6157    w=0.0188    a=0.0078
+    Peak 7: c=0.8169    h=-0.8501    w=0.0118    a=0.0067
+    Peak 8: c=0.8675    h=-0.9438    w=0.0128    a=0.0081
+</code></pre></div></td></tr></table></div>
+
+<p>and the <a href="files/output_kmurphy.csv">csv</a> should have contents like</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code>centre,height,width,area
+0.15313706712831004,-0.7210378048534919,0.015214553810080614,0.007339635054804814
+0.20672243434181659,0.8022816492248048,0.016131975744163238,0.0086590775416792
+0.2981468738739708,-0.7537656205977101,0.0162392088819803,0.008189519158254182
+0.3661868473275811,-0.7761159842494884,0.016479398153909846,0.008557071965497709
+0.4094939136295262,-0.9409097426352324,0.01557047009979476,0.009801824000493207
+0.5164469575753882,0.7871710197136214,0.01776265756743838,0.009354794467043001
+0.7770860565574634,0.6156611198029336,0.018847540823450016,0.007763429801721572
+0.8168541310701665,-0.8501072299550835,0.011831154164392762,0.006729116279430779
+0.8675404723019733,-0.9437532545518952,0.012808659598865919,0.00808759427537501
+</code></pre></div></td></tr></table></div>
+
+<h2>Deliverables</h2>
+<p>Notebook containing code and conclusions describing your implementation.</p>
+<ul>
+<li>The notebook must be fully executable as is.</li>
+<li>Downloads and extracts the data archive.</li>
+<li>Processes the common and student specific data files saving results to required files in folder <code>output</code>.<ul>
+<li>The <code>txt</code> file contains the trend and the peak information</li>
+<li>The <code>csv</code> saves the peak data to a CSV with columns (centre, height, width, area). </li>
+</ul>
+</li>
+<li>In the event of errors/issues in your algorithm, your code should output a sane (understandable message) to the <code>txt</code> file.</li>
+</ul>
 <div class="pager">
 <a class="btn btn-primary btn-lg" target="_blank" href="https://moodle.wit.ie/mod/assign/view.php?id=3153366" role="button">Submit using Moodle</a>
 </div>

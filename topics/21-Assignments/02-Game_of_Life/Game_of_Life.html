@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computational Physics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../../style/codehilite/css/default.css" rel="stylesheet">
+    <link href="../../../style/misc/css/module.css" rel="stylesheet">
+    <link href="../../../style/misc/css/practical.css" rel="stylesheet">
+
+	<script>
+		var shiftWindow = function() { scrollBy(0, -50) };
+		window.addEventListener("hashchange", shiftWindow);
+		function load() { if (window.location.hash) shiftWindow(); }
+	</script>
+
+	<script type="text/javascript"
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+  </head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			
+			
+	    	<div class="collapse navbar-collapse">
+
+
+				<ul class="nav navbar-nav navbar-left">
+					<!-- Moodle -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.wit.ie/course/view.php?id=" target="_blank"><img height="18pt" src="../../../style/misc/img/moodle_logo_on_blue.gif" /></a>
+						</div>						
+					</li>
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="" target="_blank"><img height="15pt" src="style/misc/img/slack_logo.png" /></a>
+						</div>						
+					</li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+		
+					<!-- module home -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../../../index.html"><span class="glyphicon glyphicon-home"></span></a>
+						</div>						
+					</li>
+					
+					<!-- topics -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-list-alt"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Topics</li>
+										
+										<li >
+											<a href="../../../topics/00-Module_Overview_and_Introduction/index.html">Module Overview and Introduction</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/01-Exploratory_Data_Analysis/index.html">Exploratory Data Analysis</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/02-Computational_Problems_Involving_Probability/index.html">Computational Problems Involving Probability</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/03-Cellular_Automata/index.html">Cellular Automata</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html">Agent Based Modelling</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/05-Markov_Chains/index.html">Markov Chains</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/06-Monte_Carlo/index.html">Monte Carlo</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/21-Assignments/index.html">Assignments</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+					<!-- resources -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-th-list"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Resources</li>
+										
+										<li >
+											<a href="#01-Probability_Questions">Probability Questions</a>
+										</li>
+										
+										<li >
+											<a href="#02-Game_of_Life">Game of Life</a>
+										</li>
+										
+										<li >
+											<a href="#03-Traffic_Flow">Traffic Flow</a>
+										</li>
+										
+										<li >
+											<a href="#04-SIR">SIR</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+	        	</ul>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- contents -->
+	<div class="container">
+
+		<!-- topic config
+		<div class="panel panel-info">
+			<div class="panel-heading">	
+				<h3 class="panel-title">Game of Life</h3>
+			</div>
+			<div class="panel-body" style="color:gray">
+				<span>Tasks based on the Game of Life (numpy implementation)</span>
+				<ul>
+					
+				</ul>
+			</div>
+		</div> -->
+	
+	<h1>Game of Life</h1>
+<p>In class we implemented the Game of Life on a finite world with square cells and wrap around (torus) geometry, using the Moore definition of neighbours. </p>
+<p>This assignment is an extension of this model. We want to see how an initial population structure affects its growth/decay.</p>
+<h2>Task 1</h2>
+<p>Consider all possible initial populations that can fit into a \(4\times 4\) grid, and compute the following:</p>
+<ul>
+<li>What percentage of populations shrunk in size?</li>
+<li>What percentage of populations grow in size?</li>
+<li>Draw a histogram of the final population sizes.</li>
+<li>Of the populations that died out, what was the average number of stages need for population to die out?</li>
+<li>Of the populations that died out, draw a histogram of the number of stages for population to die out.</li>
+</ul>
+<p><strong>Outline of Implementation:</strong></p>
+<ul>
+<li>Initial populations that fits into a \(4\times 4\) grid can be one-to-one identified with integers in \(0..2^{16}-1\).
+So one way to construct initial population is to:</li>
+<li>Pick an integer in \(0..2^{16}-1\)</li>
+<li>Convert to binary and prepend "0" so has 16 digits.</li>
+<li>Create <code>np.array</code> storing digits, and use <code>.reshape</code> method to convert to a \(4\times4\) grid.</li>
+<li>Place population in desired position in <code>space</code>.</li>
+<li>To generate the required statistics have a loop that iterate over integers in \(0..2^{16}-1\).</li>
+<li>Initialise <code>space</code>.</li>
+<li>Create and place the initial population.</li>
+<li>Run simulation for the required number of stages (or until population dies/stop changing).</li>
+<li>Store results.</li>
+<li><strong>Note this will take about 20 minutes, so test your code before running full loop.</strong></li>
+<li>Used stored results to answer the given questions.</li>
+</ul>
+<h2>Task 2</h2>
+<p>Repeat Task 1 but replace the Moore neighbourhood with a Von Neumann neighbourhood (where diagonal cells are not included).</p>
+<p><strong>Outline of Implementation:</strong></p>
+<ul>
+<li>The only change need is to redefine the function <code>count_neighbors</code> so that it uses the Von Neumann neighbourhood.</li>
+</ul>
+<h2>Task 3</h2>
+<p>Repeat Task 3 but replace Moore neighbourhood with a Von Neumann neighbourhood (where diagonal cells are not included) of radius 2. So the two cells to the left, to the right, above, and below are treated as neighbours.</p>
+<p><strong>Outline of Implementation:</strong></p>
+<ul>
+<li>Again, the only change needed is a redefinition of <code>count_neighbors</code>.</li>
+</ul>
+<h2>Deliverable</h2>
+<p>Upload a notebook with completed tasks to Moodle using link</p>
+	</div>
+
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../../style/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

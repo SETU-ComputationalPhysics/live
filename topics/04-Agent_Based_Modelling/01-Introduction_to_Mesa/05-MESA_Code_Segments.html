@@ -175,12 +175,12 @@ However, this page is not intended to be a replacement for the <a href="https://
 <span class="n">mesa</span><span class="o">.</span><span class="n">__version__</span>
 </code></pre></div></td></tr></table></div>
 
-<p>You should get output '3.0.0b0'.</p>
+<p>You should get output '3.0.2' or '3.1.0.dev'.</p>
 <h2><code>Agent</code> class</h2>
 <p>We need to create a class to represent the <code>Agent</code>.  Depending on the application, I might called this class 
 <code>Cell</code> (for Game of Life model), 
 <code>Tree</code> (for fire model),
-<code>Person</code> (for SIR models), etc., or I might be lazy and just call them <code>Agent</code>.</p>
+<code>Person</code> (for SIR models), etc., or I might be lazy and just call them <code>Agent</code>. In this page of code snippets I will always use name <code>Agent</code>.</p>
 <p>The minimal code for <code>Agent</code> is</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
@@ -206,7 +206,7 @@ However, this page is not intended to be a replacement for the <a href="https://
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Cell</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
 
     <span class="n">DEAD</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">ALIVE</span> <span class="o">=</span> <span class="mi">1</span>
@@ -234,12 +234,12 @@ However, this page is not intended to be a replacement for the <a href="https://
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Cell</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
 
     <span class="n">DEAD</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">ALIVE</span> <span class="o">=</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">DEAD</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_next_state</span> <span class="o">=</span> <span class="n">state</span>
@@ -276,7 +276,7 @@ However, this page is not intended to be a replacement for the <a href="https://
 <h2><code>Model</code> class</h2>
 <p>The <code>Model</code> class stores the agents, controls how that are updated, and what data is recorded. Similar to the <code>Agent</code> class you can call this anything, so you could use 
 <code>FireModel</code> (for fire model),
-<code>SchellingModel</code> (for the Schelling model), etc., but I tend to just use <code>Model</code>.</p>
+<code>SchellingModel</code> (for the Schelling model), etc., but I tend to just use <code>Model</code>. In this page of code snippets I will always use name <code>Model</code>.</p>
 <p>At a minimum the <code>Model</code> class has</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -320,7 +320,11 @@ However, this page is not intended to be a replacement for the <a href="https://
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+
+    <span class="c1"># setup matplotlib window</span>
 
     <span class="c1"># draw the model grid (if model has space/grid)</span>
 
@@ -358,7 +362,7 @@ However, this page is not intended to be a replacement for the <a href="https://
 </code></pre></div></td></tr></table></div>
 
 <h2><code>DataCollector</code> class</h2>
-<p>See <a href="https://mesa.readthedocs.io/latest/apis/datacollection.html">mesa documentation</a> for more details.</p>
+<p>See <a href="https://mesa.readthedocs.io/latest/apis/datacollection.html">mesa documentation</a> for details.</p>
 <h2>Miscellaneous Tasks</h2>
 <h3>Loop over all locations in a grid</h3>
 <p>If <code>Model</code> has a grid, we often need to loop over all locations in the grid, for example to place an agent at each location (think <code>Cell</code> in Game of Life or a <code>Tree</code> in Fire Model).  This can be done from within a method of <code>Model</code> using</p>
@@ -367,7 +371,7 @@ However, this page is not intended to be a replacement for the <a href="https://
     <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
 
-<p>or if not interested in the contents (say when in <code>Model.__init__</code> and placing agents) use</p>
+<p>or if not interested in the contents (say when in <code>Model.__init__</code> and placing agents) we use</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">coord_iter</span><span class="p">():</span>
@@ -394,7 +398,7 @@ However, this page is not intended to be a replacement for the <a href="https://
     <span class="o">...</span>
 
     <span class="k">def</span> <span class="nf">get_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">get_neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">moore</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_center</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">moore</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_center</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 		
 		<ul class="pager">

@@ -110,6 +110,10 @@
 											<a href="01-Game_of_Life.html">Game of Life</a>
 										</li>
 										
+										<li >
+											<a href="02-Fire_Model.html">Fire Model</a>
+										</li>
+										
 										<li class="active">
 											<a href="05-MESA_Code_Segments.html">MESA Code Segments</a>
 										</li>
@@ -130,7 +134,7 @@
 		
 		<ul class="pager">
 			
-			<li class="previous"><a href="01-Game_of_Life.html">&larr; Previous (Game of Life)</a></li>
+			<li class="previous"><a href="02-Fire_Model.html">&larr; Previous (Fire Model)</a></li>
 			
 			
 			
@@ -314,7 +318,7 @@ However, this page is not intended to be a replacement for the <a href="https://
 <h2>Visualisation</h2>
 <p>Mesa comes with a nice visualisation and UI (for model parameter selection) but I had issues in getting it to work with Colab so we are going build our own using <code>matplotllib.animation</code>.  We need to implement the following:</p>
 <ul>
-<li>The function <code>show</code> creates a graphical representation of the current state of the model and its agents.</li>
+<li>The function <code>draw_model</code> creates a graphical representation of the current state of the model and its agents.</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
@@ -322,23 +326,27 @@ However, this page is not intended to be a replacement for the <a href="https://
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">draw_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
 
     <span class="c1"># setup matplotlib window</span>
 
     <span class="c1"># draw the model grid (if model has space/grid)</span>
 
     <span class="c1"># draw agents in model based on their state</span>
+
+    <span class="c1"># set title</span>
 </code></pre></div></td></tr></table></div>
 
 <ul>
-<li>A function that updates the model (calling <code>mode.step</code>) and displays the model (by calling <code>show</code>)</li>
+<li>A function that updates the model (calling <code>mode.step</code>) and displays the model (by calling <code>draw_model</code>)</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-    <span class="n">show</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">draw_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Then to create an animation we:</p>
@@ -403,7 +411,7 @@ However, this page is not intended to be a replacement for the <a href="https://
 		
 		<ul class="pager">
 			
-			<li class="previous"><a href="01-Game_of_Life.html">&larr; Previous (Game of Life)</a></li>
+			<li class="previous"><a href="02-Fire_Model.html">&larr; Previous (Fire Model)</a></li>
 			
 			
 			

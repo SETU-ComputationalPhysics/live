@@ -111,6 +111,10 @@
 										</li>
 										
 										<li >
+											<a href="02-Fire_Model.html">Fire Model</a>
+										</li>
+										
+										<li >
 											<a href="05-MESA_Code_Segments.html">MESA Code Segments</a>
 										</li>
 										
@@ -134,11 +138,14 @@
 			
 			
 			
-			<li class="next"><a href="05-MESA_Code_Segments.html">Next (MESA Code Segments) &rarr;</a></li>
+			<li class="next"><a href="02-Fire_Model.html">Next (Fire Model) &rarr;</a></li>
 			
 		</ul>
 		
 		<h1>Game of Life</h1>
+<h2>Background</h2>
+<p>Covered in class.</p>
+<h2>Implementation</h2>
 <p>The following is an implementation of the Game of Life using the <a href="https://mesa.readthedocs.io/latest/index.html">Mesa Agent Based Modeling library</a>. This library has a few versions of the Game Of Life, the implementation here is slower but simpler to help you understand how to use the mesa library.</p>
 <h2>Core classes <code>Agent</code> / <code>Cell</code> and <code>Model</code></h2>
 <p>To implement an agent based model in mesa we need to create at least two classes:</p>
@@ -330,7 +337,7 @@ and the agents in the model. </p>
 </code></pre></div></td></tr></table></div>
 
 <h2>Visualise the model</h2>
-<p>We need a function, <code>show</code> with structure  </p>
+<p>We need a function, <code>draw_model</code> with structure  </p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -341,7 +348,7 @@ and the agents in the model. </p>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">draw_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
 
     <span class="c1"># setup the matplotlib axes</span>
 
@@ -405,13 +412,13 @@ and the agents in the model. </p>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stage </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">steps</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 
-<p>Output of the <code>show</code> function is shown below.</p>
+<p>Output of the <code>draw_model</code> function is shown below.</p>
 <p><img alt="" src="files/game_of_life_frame.png" /></p>
 <h2>Animation</h2>
 <p>We will animate our models using the same process that we used for the <code>numpy</code> implementation.</p>
 <ul>
 <li>We need a function, <code>frame</code> that generates each frame. Typically it updates the model (calling <code>model.step()</code>) and displays the model (by calling <code>show(model, ax)</code>).</li>
-<li>We create a <code>matplotlib</code> window using (or similar if multiple plots), by calling <code>plt.subplots</code> we pass the resulting <code>ax</code> to <code>show</code>, which will draw the model.</li>
+<li>We create a <code>matplotlib</code> window using (or similar if multiple plots), by calling <code>plt.subplots</code> we pass the resulting <code>ax</code> to <code>draw_model</code>, which will draw the model.</li>
 <li>We create and display the animation using <code>animation.FuncAnimation</code> and <code>HTML(anim.to_jshtml())</code>.</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
@@ -430,7 +437,7 @@ and the agents in the model. </p>
 
 <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-    <span class="n">show</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">draw_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 
@@ -450,7 +457,7 @@ and the agents in the model. </p>
 			
 			
 			
-			<li class="next"><a href="05-MESA_Code_Segments.html">Next (MESA Code Segments) &rarr;</a></li>
+			<li class="next"><a href="02-Fire_Model.html">Next (Fire Model) &rarr;</a></li>
 			
 		</ul>
 

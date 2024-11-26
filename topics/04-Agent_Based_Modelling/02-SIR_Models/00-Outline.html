@@ -82,8 +82,12 @@
 									<ul class="dropdown-menu" role="menu">
 										<li class="dropdown-header">Resources</li>
 										
-										<li class="active">
+										<li >
 											<a href="../../../topics/04-Agent_Based_Modelling/index.html#01-Introduction_to_Mesa">Introduction to Mesa</a>
+										</li>
+										
+										<li class="active">
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#02-SIR_Models">SIR Models</a>
 										</li>
 										
 									</ul>
@@ -107,19 +111,11 @@
 										</li>
 										
 										<li >
-											<a href="01-Game_of_Life.html">Game of Life</a>
+											<a href="01-Continuous_Model.html">Continuous Model</a>
 										</li>
 										
 										<li >
-											<a href="02-Fire_Model.html">Fire Model</a>
-										</li>
-										
-										<li >
-											<a href="03-Schelling_Model_of_Segregation.html">Schelling Model of Segregation</a>
-										</li>
-										
-										<li >
-											<a href="05-MESA_Code_Segments.html">MESA Code Segments</a>
+											<a href="02-Agent_Based_Model.html">Agent Based Model</a>
 										</li>
 										
 									</ul>
@@ -142,21 +138,27 @@
 			
 			
 			
-			<li class="next"><a href="01-Game_of_Life.html">Next (Game of Life) &rarr;</a></li>
+			<li class="next"><a href="01-Continuous_Model.html">Next (Continuous Model) &rarr;</a></li>
 			
 		</ul>
 		
-		<h1>Introduction to Mesa</h1>
-<p>Rather than implementing our various models from scratch using <code>numpy</code>, we will use the Mesa library. Mesa is a Python library for agent-based modelling. It is designed to be modular, so you can use as much or as little of it as you like. It is also designed to be easy to use, so you can get a model up and running quickly.  </p>
-<p>We will start by implementing the Game of Life model using Mesa and compare it to our previous implementation in <code>numpy</code>.</p>
+		<h1>Agent based models of SIR Epidemic Models</h1>
+<h2>Background</h2>
+<p>In this assignment we will explore the SIR model of epidemics using an agent based model.</p>
+<p>The SIR model is a simple model of the spread of a disease in a population. The population is divided into three groups: those susceptible to the disease, those infected with the disease, and those who have recovered from the disease and are immune to it.  There are multiple variations of the SIR model, for example the SIRD variation includes the number of people dead due to the disease.</p>
+<p>When implementing SIR type models, we can use two approaches:</p>
 <ul>
-<li><a href="01-Game_of_Life.html">Game of Life</a></li>
-<li><a href="02-Fire_Model.html">Fire Model</a></li>
-<li><a href="03-Schelling_Model_of_Segregation.html">Schelling Model of Segregation</a></li>
+<li>
+<p><strong>Continuous models</strong> - In this approach, we model the population as continuous variables. The population is divided into three compartments: Susceptible, Infected, and Recovered. The rate of change of each compartment is modeled using differential equations. </p>
+</li>
+<li>
+<p><strong>Discrete models</strong> - In this approach, we model the population as a collection of individuals. Each individual is in one of three states: Susceptible, Infected, or Recovered. The state of each individual changes over time based on the interactions between individuals. This is the agent based approach that we will focus on in this assignment.</p>
+</li>
 </ul>
-<p>And a page that contains code snippets that I used in the implementation of the Game of Life model and other models.</p>
+<p>The following pages summaries the theory and the implementation of the continuous and agent based models of SIR models. You should create a notebook and implement each of the listed tasks.</p>
 <ul>
-<li><a href="05-MESA_Code_Segments.html">MESA Code Segments</a></li>
+<li><a href="01-Continuous_Model.html">Continuous Model</a></li>
+<li><a href="02-Agent_Based_Model.html">Agent Based Model</a></li>
 </ul>
 		
 		<ul class="pager">
@@ -165,7 +167,7 @@
 			
 			
 			
-			<li class="next"><a href="01-Game_of_Life.html">Next (Game of Life) &rarr;</a></li>
+			<li class="next"><a href="01-Continuous_Model.html">Next (Continuous Model) &rarr;</a></li>
 			
 		</ul>
 

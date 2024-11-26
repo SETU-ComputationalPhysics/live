@@ -115,6 +115,10 @@
 										</li>
 										
 										<li >
+											<a href="03-Schelling_Model_of_Segregation.html">Schelling Model of Segregation</a>
+										</li>
+										
+										<li >
 											<a href="05-MESA_Code_Segments.html">MESA Code Segments</a>
 										</li>
 										
@@ -138,7 +142,7 @@
 			
 			
 			
-			<li class="next"><a href="05-MESA_Code_Segments.html">Next (MESA Code Segments) &rarr;</a></li>
+			<li class="next"><a href="03-Schelling_Model_of_Segregation.html">Next (Schelling Model of Segregation) &rarr;</a></li>
 			
 		</ul>
 		
@@ -164,13 +168,13 @@ In the Fire model, only some grid locations contain an agent, <code>Tree</code>.
 <li>The <code>Tree</code> agent has a state that can be <code>BURNABLE</code>, <code>BURNING</code>, or <code>BURNT</code>.</li>
 <li>The <code>Model.step</code> should perform simultaneous update (similar to Game of Life).</li>
 </ul>
-<h2>Core classes <code>Agent</code> / <code>Tree</code> and <code>Model</code></h2>
+<h2>Outline of core classes <code>Agent</code> / <code>Tree</code> and <code>Model</code></h2>
 <h3><code>Agent</code> / <code>Tree</code> class</h3>
 <ul>
 <li>store its <code>state</code> which is <code>BURNABLE</code>, <code>BURNING</code>, or <code>BURNT</code>.</li>
-<li>have function, <code>get_neighbors</code> to return a list of all neighbours.</li>
-<li>have function, <code>compute_step</code> to compute the update, to <code>state</code>, needed in the next step.</li>
-<li>have function, <code>step</code> to apply the update (that was computed in <code>compute_step</code>).</li>
+<li>has function, <code>get_neighbors</code> to return a list of all neighbours.</li>
+<li>has function, <code>compute_step</code> to compute the update, to <code>state</code>, needed in the next step.</li>
+<li>has function, <code>step</code> to apply the update (that was computed in <code>compute_step</code>).</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -208,18 +212,29 @@ and the agents in the model. </p>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="c1"># store model parameters</span>
 
         <span class="c1"># create the model space/grid</span>
 
         <span class="c1"># create agents in the model</span>
 
+        <span class="c1"># start simulation</span>
+
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="s2">&quot;compute_step&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
+
+<h2>Implementing the Fire Model</h2>
+<h2>Data Collector</h2>
 		
 		<ul class="pager">
 			
@@ -227,7 +242,7 @@ and the agents in the model. </p>
 			
 			
 			
-			<li class="next"><a href="05-MESA_Code_Segments.html">Next (MESA Code Segments) &rarr;</a></li>
+			<li class="next"><a href="03-Schelling_Model_of_Segregation.html">Next (Schelling Model of Segregation) &rarr;</a></li>
 			
 		</ul>
 

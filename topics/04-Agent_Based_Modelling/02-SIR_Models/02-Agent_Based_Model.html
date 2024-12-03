@@ -166,14 +166,22 @@
 <li>has function, <code>get_neighborhood</code> to return a list of all neighboring cells.</li>
 <li>has function, <code>step</code> to compute its behaviour based on its <code>state</code> and the <code>state</code> of its neighbours.</li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+
+    <span class="n">SUSCEPTIBLE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">INFECTED</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">RECOVERED</span> <span class="o">=</span> <span class="mi">2</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -225,7 +233,8 @@ and the agents in the model.</p>
 <h3><code>Agent</code> class</h3>
 <p>The <code>get_neighborhood</code> method:</p>
 <ul>
-<li>This is similar the <code>get_neighbors</code> method defined in the Game of Life and other models, but calls the method <code>grid.get_neighborhood</code> in place of <code>grid.get_neighbors</code>.</li>
+<li>This is similar the <code>get_neighbors</code> method defined in the Game of Life and other models, but calls the method <code>grid.get_neighborhood</code> in place of <code>grid.get_neighbors</code>.
+What is the difference? Well <code>get_neighbors</code> returns a list of agents in the neighbourhood, while <code>get_neighborhood</code> returns a list of grid locations in the neighbourhood. We need to locations to pick one to move to when updating.</li>
 </ul>
 <p>The <code>step</code> method has the following rules:</p>
 <ul>
@@ -234,12 +243,12 @@ and the agents in the model.</p>
 <ul>
 <li>use <code>model.pr_move</code> to determine if the agent should move.</li>
 <li>get the list of neighbouring cells using <code>self.get_neighborhood</code>.</li>
-<li>pick a random destination cell from the list of neighbouring cells.</li>
+<li>pick a random destination cell from the list of neighbouring cells, using <code>np.choice</code>.</li>
 <li>move the agent to the destination cell.</li>
 </ul>
 </li>
 <li>
-<p>If an agent is <code>SUSCEPTIBLE</code>, then it can become infected by any (if they exist) agents in the same location that are <code>INFECTED</code> with probability <code>pr_infect</code>. Use a formula similar to that used in the Fire model to switch from <code>BURNABLE</code> to <code>BURNING</code></p>
+<p>If an agent is <code>INFECTED</code>, then it can infect each <code>SUSCEPTIBLE</code> agents in the same location (if they exist) with probability <code>pr_infect</code>.</p>
 </li>
 <li>
 <p>If an agent is <code>INFECTED</code>, then it can recover with probability <code>pr_recover</code>. </p>
@@ -248,18 +257,22 @@ and the agents in the model.</p>
 <p>We could implement these rules fully, but instead  we will implement them step by step and examine progress.</p>
 <h3>The <code>Model</code> class</h3>
 <p>This is implemented along similar lines to the Fire Model or the Schelling Model:</p>
-<p>In <code>Model.__init__</code>:
-    * Replace <code>SingleGrid</code> with <code>MutliGrid</code>
-    * Add agents (default state is <code>SUSCEPTIBLE</code>)
-    * Pick one random agent to be <code>INFECTED</code>.</p>
-<p>In <code>Model.step</code>:
-    * Same as in the Schelling Model.</p>
+<p>In <code>Model.__init__</code>:</p>
+<ul>
+<li>Replace <code>SingleGrid</code> with <code>MutliGrid</code></li>
+<li>Add agents (default state is <code>SUSCEPTIBLE</code>)</li>
+<li>Pick one random agent to be <code>INFECTED</code>.</li>
+</ul>
+<p>In <code>Model.step</code>:</p>
+<ul>
+<li>Same as in the Schelling Model (where all agents are updated in random order).</li>
+</ul>
 <h3>Visualisation</h3>
 <p>To start, the function <code>draw_model</code> is near identical to the Schelling Model function. use
 colours and labels:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">]</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Susceptible&#39;</span><span class="p">,</span> <span class="s1">&#39;Infected&#39;</span><span class="p">,</span> <span class="s1">&#39;Recovered&#39;</span><span class="p">,</span> <span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Susceptible&#39;</span><span class="p">,</span> <span class="s1">&#39;Infected&#39;</span><span class="p">,</span> <span class="s1">&#39;Recovered&#39;</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Then creating a model and displaying it using</p>
@@ -271,12 +284,12 @@ colours and labels:</p>
 </code></pre></div></td></tr></table></div>
 
 <p>should result in the following</p>
-<p><img alt="" src="files/model_ver_1.png" /></p>
-<p>This is OK, but what happens when multiple agents are in the same location? How can we see multiple agents since we will only see the last one drawn.</p>
+<p><img alt="" src="files/model_ver_0.png" /></p>
+<p>This is OK, but what happens when multiple agents are in the same grid location? How can we see multiple agents since we will only see the last one drawn.</p>
 <p>There are a number of fixes for this. The easiest of these is to draw smaller agents and give each agent a random offset (from the centre). This works, but we want to be careful of two things:</p>
 <ul>
 <li>We do not want any randomness used in the visualisation to affect the randomness in the simulation. You should think about why this is not desirable.</li>
-<li>We want the random offset for the agents to be constant for the duration of the simulation - otherwise the agents will be jumping around even when that are not moving grid locations.</li>
+<li>We want the random offset for the agents to be constant for the duration of the simulation - otherwise the agents will be jumping around within a grid location even when that are not moving grid locations.</li>
 </ul>
 <p>There is a solution to both of these issues:</p>
 <ul>
@@ -302,8 +315,8 @@ colours and labels:</p>
 </code></pre></div></td></tr></table></div>
 
 <p>This results in the following</p>
-<p><img alt="" src="files/model_ver_2.png" /></p>
-<h3>Implementing <code>Agent</code> rules in separate versions</h3>
+<p><img alt="" src="files/model_ver_1.png" /></p>
+<h3>Implementing <code>Agent</code> update rules in separate versions</h3>
 		
 		<ul class="pager">
 			

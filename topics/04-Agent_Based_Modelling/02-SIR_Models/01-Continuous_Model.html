@@ -143,7 +143,7 @@
 		</ul>
 		
 		<h1>Continuous Models of SIR Epidemic Models</h1>
-<p>Our interest is agent based modelling of SIR models. However, it is useful to understand the continuous models of SIR models so we can compare it with the agent based model.</p>
+<p>Our interest is agent based modelling of SIR type models. However, it is useful to understand the continuous version of SIR type models so we can compare it with the agent based models.</p>
 <h2>Theory</h2>
 <p>The SIR model is a simple model of the spread of a disease in a population.</p>
 <p>The population of \(N\) individuals is divided into three compartments:</p>
@@ -152,6 +152,8 @@
 <li>Infected, \(I\), individuals infected with the disease;</li>
 <li>Recovered, \(R\), individuals recovered from the disease (and now have acquired immunity to it).</li>
 </ul>
+<p>If we treat \(S\), \(I\), and \(R\) as continuous variables (they are number of people!)
+and make simplifying assumptions about individuals' behaviour we can derive the following system of differential equations:</p>
 <p>$$
     \begin{align}
         \frac{dS}{dt} &amp;= - \beta S I / N \\
@@ -217,8 +219,8 @@ Individuals develop immunity to the disease, at a \(\gamma\) cure rate, so they 
 you pass a function defining the ode,
 the span of the independent variable,
 initial conditions,
-then optional arguments are the list of parameter values,
-the points at which to calculate the solution.</p>
+then the more important optional arguments are the list of parameter values, <code>args</code>, and
+the points at which to calculate the solution, <code>t_eval</code>.</p>
 <p>Function <code>solve_ivp</code> returns a lot of data in <code>sol</code>.  We just want the independent value, <code>t</code>, and the dependent variable <code>S</code>,<code>I</code>, <code>R</code> stored in 2D array <code>y</code>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>

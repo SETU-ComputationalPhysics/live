@@ -118,6 +118,10 @@
 											<a href="02-Agent_Based_Model.html">Agent Based Model</a>
 										</li>
 										
+										<li >
+											<a href="03-End_of_Men_Model.html">End of Men Model</a>
+										</li>
+										
 									</ul>
 								</li>
 							</ul>
@@ -138,7 +142,7 @@
 			
 			
 			
-			<li class="next disabled"><a>Next &rarr;</a></li>
+			<li class="next"><a href="03-End_of_Men_Model.html">Next (End of Men Model) &rarr;</a></li>
 			
 		</ul>
 		
@@ -299,7 +303,7 @@ colours and labels:</p>
 </code></pre></div></td></tr></table></div>
 
 <ul>
-<li>When creating an agent, in <code>Agent.__init__</code> give it a random offest</li>
+<li>When creating an agent, in <code>Agent.__init__</code> give it a random offset</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -317,6 +321,41 @@ colours and labels:</p>
 <p>This results in the following</p>
 <p><img alt="" src="files/model_ver_1.png" /></p>
 <h3>Implementing <code>Agent</code> update rules in separate versions</h3>
+<h4>Version 1 &mdash; <code>INFECTED</code> agent movement</h4>
+<p>Add movement to the agent that is <code>INFECTED</code> only. Use grid method <code>move_agent</code>.</p>
+<p>By moving just the single <code>INFECTED</code> agent it is easier to verify that the correct behaviour is implemented.</p>
+<p>TEST: When you run simulation only the <code>INFECTED</code> agent show move and only move from grid location to neighbouring grid location.</p>
+<h4>Version 2 &mdash; all agent movement</h4>
+<p>Now modify the <code>agent.step</code> method so that all agents move.</p>
+<p>TEST: Now all agents should be moving. Lower <code>density</code> value so easier to track each agent to verify movement.</p>
+<h4>Version 3 &mdash; disease spread</h4>
+<p>When updating an <code>INFECTED</code> agent we need to see if they infect any <code>SUSCEPTIBLE</code> agents who are sharing their current grid location. To do this:</p>
+<ul>
+<li>We need grid method <code>get_cell_list_contents</code> which returns a list of agents in the specified grid location.</li>
+<li>Iterate over the list of agents and infect any that are <code>SUSCEPTIBLE</code> with probability <code>py_infect</code>.</li>
+</ul>
+<p>TEST: Now infection should spread as agents move around the grid.</p>
+<h4>Version 4 &mdash; recover from disease</h4>
+<p>An infected agent recovers with probability <code>pr_recover</code>, changing state from <code>INFECTED</code> to <code>RECOVERED</code>.</p>
+<p>TEST: Now infection should spread but over time the infected are replaced by recovered.</p>
+<p><strong>NOTE: Finally check the order of your actions in <code>agent.step</code> we want the move to be the last action carried out.</strong></p>
+<h2>Data Collection</h2>
+<p>Next add the data collection (similar to Fire Model and Schelling Model). And generate plots similar to the fire model to investigate the impact of the model parameters 
+<code>pr_infect</code> and <code>pr_recover</code>. These parameters play a similar role to the Fire model parameters <code>pr_spread</code> and <code>pr_burnout</code>, and play a similar role to the continuous SIR model parameters <code>beta</code> and <code>gamma</code>.</p>
+<h1>Task 2</h1>
+<p>Generate generate plots similar to the fire model to investigate the impact of the model parameters.</p>
+<h1>Task 3</h1>
+<p>Modify the model so that it includes state <code>DEAD</code>. This gives use the SIRD model and is implemented using:</p>
+<ul>
+<li>New state <code>DEAD</code>.</li>
+<li>New model parameter <code>pr_die</code>. Agents that are infected now recover with probability
+<code>pr_recover*(1-pr_die)</code> and die with probability 
+<code>pr_recover*pr_die</code>.  This is so the parameters <code>pr_die</code> works similar to the parameter <code>mu</code> in the continuous SIRD model (Task 1). </li>
+<li>A <code>DEAD</code> agent does not die and the simplest approach is not display them in <code>draw_model</code>.</li>
+</ul>
+<h1>Task 4</h1>
+<p>One advantage of the agent based model approach for disease spread is that it is easy to add effects of social distancing.  One approach is to add another parameter, say <code>pr_isolate</code>, which when <code>state</code> is <code>INFECTED</code> the agent does not move with probability <code>pr_isolate</code>. This probability check is applied inside the probability check <code>self.random.random()&lt;self.model.pr_move</code>.</p>
+<p>Then using data collector and batch runner generate plots to show the impact of <code>pr_isolate</code>. </p>
 		
 		<ul class="pager">
 			
@@ -324,7 +363,7 @@ colours and labels:</p>
 			
 			
 			
-			<li class="next disabled"><a>Next &rarr;</a></li>
+			<li class="next"><a href="03-End_of_Men_Model.html">Next (End of Men Model) &rarr;</a></li>
 			
 		</ul>
 

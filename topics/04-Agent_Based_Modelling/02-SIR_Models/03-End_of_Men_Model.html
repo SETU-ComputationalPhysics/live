@@ -102,11 +102,11 @@
 							<ul class="nav navbar-nav">
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-										<span>Outline</span
+										<span>End of Men Model</span
 									</a>
 									<ul class="dropdown-menu" role="menu">
 										
-										<li class="active">
+										<li >
 											<a href="00-Outline.html">Outline</a>
 										</li>
 										
@@ -118,7 +118,7 @@
 											<a href="02-Agent_Based_Model.html">Agent Based Model</a>
 										</li>
 										
-										<li >
+										<li class="active">
 											<a href="03-End_of_Men_Model.html">End of Men Model</a>
 										</li>
 										
@@ -138,48 +138,48 @@
 		
 		<ul class="pager">
 			
-			<li class="previous disabled"><a>&larr; Previous</a></li>
+			<li class="previous"><a href="02-Agent_Based_Model.html">&larr; Previous (Agent Based Model)</a></li>
 			
 			
 			
-			<li class="next"><a href="01-Continuous_Model.html">Next (Continuous Model) &rarr;</a></li>
+			<li class="next disabled"><a>Next &rarr;</a></li>
 			
 		</ul>
 		
-		<h1>Agent based models of SIR Epidemic Models</h1>
-<h2>Background</h2>
-<p>In this assignment we will explore the SIR model of epidemics using an agent based model.</p>
-<p>The SIR model is a simple model of the spread of a disease in a population. The population is divided into three groups: those susceptible to the disease, those infected with the disease, and those who have recovered from the disease and are immune to it.  There are multiple variations of the SIR model, for example the SIRD variation includes the number of people dead due to the disease.</p>
-<p>When implementing SIR type models, we can use two approaches:</p>
+		<h1>End of Men Model</h1>
+<p>OK, so now you are going to extend both the continuous and agent based model of the SIRD to and fictional disease.</p>
+<p>I mentioned that I recently read <em>The End of Men</em> by Christina Sweeney-Baird which describes a new virus that only killed males. I want you to build a SIR type  model to represent the disease spread as described in the book.</p>
+<p>The book does not describe every detail of the disease spread so I have to make some guesses based on the text. And have intentionally left things vague so you will need to make some modelling decisions yourselves.</p>
+<ul>
+<li>Population is 50 million (Britten only).</li>
+<li>Population is 50% female / 50% male.</li>
+<li>Females when infected become carriers of the virus but are otherwise unaffected and recover in about two weeks, they do not develop immunity.</li>
+<li>Males when infected have a 90% mortality rate and typically die within a week.</li>
+<li>Males that survive the infection typically recover in a week and appear to have life time immunity.</li>
+<li>The disease spread is described as "very contagious" and "spreads like wildfire", so assuming R_0 is high, say about 20.0.</li>
+</ul>
+<h1>Task 5</h1>
+<p>Create a new notebook called <code>End_of_Men_Model.ipynb</code> to implement this model.  You will have a lot of code in common with your <code>SIR_Models.ipynb</code> notebook, but using a separate notebook will help grading.</p>
+<p>In notebook <code>End_of_Men_Model.ipynb</code> implement both the continuous and the Agent based model representing the spread of this disease.</p>
+<p>For the continuous model: </p>
+<p>Construct the ODE system representing your model, then determine suitable parameters for the model and plot the model curves showing the infection progression. What is the number of infected and the number of deaths?</p>
+<p>For the discrete (agent based) model: </p>
 <ul>
 <li>
-<p><strong>Continuous models</strong> - In this approach, we model the population as continuous variables. The population is divided into three compartments: Susceptible, Infected, and Recovered. The rate of change of each compartment is modeled using differential equations. </p>
+<p>You will need to either add another variable to <code>Agent</code> to represent gender or have more values for <code>state</code>, i.e, <code>INFECTED_MALE</code> etc.</p>
 </li>
 <li>
-<p><strong>Discrete models</strong> - In this approach, we model the population as a collection of individuals. Each individual is in one of three states: Susceptible, Infected, or Recovered. The state of each individual changes over time based on the interactions between individuals. This is the agent based approach that we will focus on in this assignment.</p>
+<p>Only the infected males will show symptoms so only they will isolate. Is this disease worse because it only affect males? </p>
 </li>
 </ul>
-<p>The following pages summaries the theory and the implementation of the continuous and agent based models of SIR models. You should create a notebook and implement each of the listed tasks.</p>
-<ul>
-<li><a href="01-Continuous_Model.html">Continuous Model</a></li>
-<li><a href="02-Agent_Based_Model.html">Agent Based Model</a></li>
-<li><a href="03-End_of_Men_Model.html">End of Men Model</a></li>
-</ul>
-<h2>Deliverable</h2>
-<p>Two notebooks</p>
-<ul>
-<li>SIR_Models.ipynb (Tasks 1-4)</li>
-<li>End_of_Men_Model.ipynb (Task 5)</li>
-</ul>
-<p>Upload to Moodle using following link</p>
 		
 		<ul class="pager">
 			
-			<li class="previous disabled"><a>&larr; Previous</a></li>
+			<li class="previous"><a href="02-Agent_Based_Model.html">&larr; Previous (Agent Based Model)</a></li>
 			
 			
 			
-			<li class="next"><a href="01-Continuous_Model.html">Next (Continuous Model) &rarr;</a></li>
+			<li class="next disabled"><a>Next &rarr;</a></li>
 			
 		</ul>
 

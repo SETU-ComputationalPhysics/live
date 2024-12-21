@@ -86,6 +86,10 @@
 											<a href="../../../topics/04-Agent_Based_Modelling/index.html#01-Introduction_to_Mesa">Introduction to Mesa</a>
 										</li>
 										
+										<li >
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#02-SIR_Models">SIR Models</a>
+										</li>
+										
 									</ul>
 								</li>
 							</ul>
@@ -222,14 +226,22 @@ Vi Hart and Nicky Case's Parable of the Polygons
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
+
     <span class="k">def</span> <span class="nf">get_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
 
+
     <span class="k">def</span> <span class="nf">is_happy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+
 
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
 </code></pre></div></td></tr></table></div>
@@ -252,7 +264,14 @@ and the agents in the model. </p>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
 
@@ -262,7 +281,10 @@ and the agents in the model. </p>
 
         <span class="c1"># create agents in the model</span>
 
-        <span class="c1"># start simulation</span>
+        <span class="c1"># setup data collector</span>
+
+        <span class="c1"># init simulation</span>
+
 
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">shuffle_do</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>        
@@ -294,7 +316,7 @@ and the <code>pr_same</code> parameter is the proportion of neighbours that need
 <p>The model space is a <code>SingleGrid</code> with toroidal boundary conditions. This the same as that used in the Game of Life.</p>
 <h4>Create agents in the model</h4>
 <p>Creating the agents is done using a loop similar to the fire model by iterating over the grid locations and create an agent (with probability <code>density</code>). When creating agent we set its <code>state</code>to <code>JETS</code> based on <code>pr_minority</code>.</p>
-<h4>Start simulation</h4>
+<h4>Init simulation</h4>
 <p>We will add stuff here later, when we add data collection facilities.</p>
 <h2>Visualisation</h2>
 <p>The visualisation and animation is practically the same as in the Fire Model, the only addition is the letter <code>X</code> for agents that are not happy.</p>

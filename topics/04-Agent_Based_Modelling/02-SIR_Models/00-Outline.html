@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computational Physics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../../style/codehilite/css/default.css" rel="stylesheet">
+    <link href="../../../style/misc/css/module.css" rel="stylesheet">
+    <link href="../../../style/misc/css/practical.css" rel="stylesheet">
+
+	<script type="text/javascript"
+	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+  </head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			
+			
+	    	<div class="collapse navbar-collapse">
+
+				<ul class="nav navbar-nav navbar-left">
+					<!-- Moodle -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.setu.ie/course/view.php?id=217744" target="_blank"><img height="18pt" src="../../../style/misc/img/moodle_logo_on_blue.gif" /></a>
+						</div>						
+					</li>
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://computational-jhw6794.slack.com" target="_blank"><img height="15pt" src="../../../style/misc/img/slack_logo.png" /></a>
+						</div>						
+					</li>
+				</ul>
+
+	      		<ul class="nav navbar-nav navbar-right">
+
+					<!-- module home -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../../../index.html"><span class="glyphicon glyphicon-home"></span></a>
+						</div>						
+					</li>
+					
+					<!-- topics -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-list-alt"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Topics</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+					<!-- resources -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-th-list"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Resources</li>
+										
+										<li >
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#01-Introduction_to_Mesa">Introduction to Mesa</a>
+										</li>
+										
+										<li class="active">
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#02-SIR_Models">SIR Models</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+								
+					<!-- pages-->
+	        		<li>
+						<div class="navbar-collapse collapse" id="c">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span>Outline</span
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										
+										<li class="active">
+											<a href="00-Outline.html">Outline</a>
+										</li>
+										
+										<li >
+											<a href="01-Continuous_Model.html">Continuous Model</a>
+										</li>
+										
+										<li >
+											<a href="02-Agent_Based_Model.html">Agent Based Model</a>
+										</li>
+										
+										<li >
+											<a href="03-End_of_Men_Model.html">End of Men Model</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li> 
+					
+	        	</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- contents -->
+	<div class="container">
+		
+		<ul class="pager">
+			
+			<li class="previous disabled"><a>&larr; Previous</a></li>
+			
+			
+			
+			<li class="next"><a href="01-Continuous_Model.html">Next (Continuous Model) &rarr;</a></li>
+			
+		</ul>
+		
+		<h1>Agent based models of SIR Epidemic Models</h1>
+<h2>Background</h2>
+<p>In this assignment we will explore the SIR model of epidemics using an agent based model.</p>
+<p>The SIR model is a simple model of the spread of a disease in a population. The population is divided into three groups: those susceptible to the disease, those infected with the disease, and those who have recovered from the disease and are immune to it.  There are multiple variations of the SIR model, for example the SIRD variation includes the number of people dead due to the disease.</p>
+<p>When implementing SIR type models, we can use two approaches:</p>
+<ul>
+<li>
+<p><strong>Continuous models</strong> - In this approach, we model the population as continuous variables. The population is divided into three compartments: Susceptible, Infected, and Recovered. The rate of change of each compartment is modeled using differential equations. </p>
+</li>
+<li>
+<p><strong>Discrete models</strong> - In this approach, we model the population as a collection of individuals. Each individual is in one of three states: Susceptible, Infected, or Recovered. The state of each individual changes over time based on the interactions between individuals. This is the agent based approach that we will focus on in this assignment.</p>
+</li>
+</ul>
+<p>The following pages summaries the theory and the implementation of the continuous and agent based models of SIR models. You should create a notebook and implement each of the listed tasks.</p>
+<ul>
+<li><a href="01-Continuous_Model.html">Continuous Model</a></li>
+<li><a href="02-Agent_Based_Model.html">Agent Based Model</a></li>
+<li><a href="03-End_of_Men_Model.html">End of Men Model</a></li>
+</ul>
+<h2>Deliverable</h2>
+<p>Two notebooks:</p>
+<ul>
+<li>SIR_Models.ipynb (Tasks 1-4)</li>
+<li>End_of_Men_Model.ipynb (Task 5)</li>
+</ul>
+<p>Upload completed notebooks to Moodle using following link</p>
+<div class="pager">
+<a class="btn btn-primary btn-lg" target="_blank" href="https://moodle.wit.ie/mod/assign/view.php?id=4386392" role="button">Submit using Moodle</a>
+</div>
+		
+		<ul class="pager">
+			
+			<li class="previous disabled"><a>&larr; Previous</a></li>
+			
+			
+			
+			<li class="next"><a href="01-Continuous_Model.html">Next (Continuous Model) &rarr;</a></li>
+			
+		</ul>
+
+	</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../../style/bootstrap/js/bootstrap.min.js"></script>
+	
+  </body>
+</html>

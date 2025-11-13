@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computational Physics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../../style/codehilite/css/default.css" rel="stylesheet">
+    <link href="../../../style/misc/css/module.css" rel="stylesheet">
+    <link href="../../../style/misc/css/practical.css" rel="stylesheet">
+
+	<script type="text/javascript"
+	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+  </head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			
+			
+	    	<div class="collapse navbar-collapse">
+
+				<ul class="nav navbar-nav navbar-left">
+					<!-- Moodle -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.setu.ie/course/view.php?id=217744" target="_blank"><img height="18pt" src="../../../style/misc/img/moodle_logo_on_blue.gif" /></a>
+						</div>						
+					</li>
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://computational-jhw6794.slack.com" target="_blank"><img height="15pt" src="../../../style/misc/img/slack_logo.png" /></a>
+						</div>						
+					</li>
+				</ul>
+
+	      		<ul class="nav navbar-nav navbar-right">
+
+					<!-- module home -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../../../index.html"><span class="glyphicon glyphicon-home"></span></a>
+						</div>						
+					</li>
+					
+					<!-- topics -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-list-alt"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Topics</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+					<!-- resources -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-th-list"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Resources</li>
+										
+										<li class="active">
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#01-Introduction_to_Mesa">Introduction to Mesa</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#02-SIR_Models">SIR Models</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+								
+					<!-- pages-->
+	        		<li>
+						<div class="navbar-collapse collapse" id="c">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span>Schelling Model of Segregation</span
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										
+										<li >
+											<a href="00-Outline.html">Outline</a>
+										</li>
+										
+										<li >
+											<a href="01-Game_of_Life.html">Game of Life</a>
+										</li>
+										
+										<li >
+											<a href="02-Fire_Model.html">Fire Model</a>
+										</li>
+										
+										<li class="active">
+											<a href="03-Schelling_Model_of_Segregation.html">Schelling Model of Segregation</a>
+										</li>
+										
+										<li >
+											<a href="05-MESA_Code_Segments.html">MESA Code Segments</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li> 
+					
+	        	</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- contents -->
+	<div class="container">
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="02-Fire_Model.html">&larr; Previous (Fire Model)</a></li>
+			
+			
+			
+			<li class="next"><a href="05-MESA_Code_Segments.html">Next (MESA Code Segments) &rarr;</a></li>
+			
+		</ul>
+		
+		<h1>Schelling Model of Segregation</h1>
+<h2>Background</h2>
+<p>A recent article in the <a href="https://www.theskimm.com">1 November 2024, Daily Skimm</a> discussed an article in the <a href="https://www.nytimes.com/interactive/2024/10/30/upshot/voters-moving-polarization.html?unlocked_article_code=1.Wk4.NP9E.duPqaugAW78j&amp;smid=url-share">New York Times</a> which analysed the movement of voters in the United States. The article found that voters are increasingly moving to neighbourhoods where the majority of residents share their political views.</p>
+<figure>
+<img src="files/skimm_1.png" width="45%;"/>
+<img src="files/skimm_2.png" width="45%;"/>
+
+<caption><br />
+A screenshot of the skimm article
+</caption>
+</figure>
+
+<p>This change leading to increased polarisation (not to mention that some do not think being an adjudicated rapist is a barrier to being elected) are in the United States.</p>
+<p>There are a number of models to look at 
+how segregation may appear with only mild preferences in the individuals in the system. One of these is Schelling Model which is an agent-based model where:</p>
+<ul>
+<li>The world contains a discrete spatial grid.</li>
+<li>Agents are placed randomly on the grid, with at most one in each grid location.</li>
+<li>Agents come in two colors: red and blue. </li>
+<li>At each step, each agent is happy if a certain number of their possible neighbours have the color, and unhappy otherwise.</li>
+<li>Unhappy agents will pick a random empty cell to move to each step. </li>
+<li>The model keeps running until there are no unhappy agents.</li>
+</ul>
+<p>By default, the number of similar neighbours the agents need to be happy is set to 3 and they have up to 8 possible neighbours (Moore neighbourhood). That means the agents would be perfectly happy with a majority of their neighbours being of a different color (e.g. a Blue agent would be happy with five Red neighbours and three Blue ones). Despite this, the model consistently leads to a high degree of segregation, with most agents ending up with no neighbours of a different color.</p>
+<p>Before we start implementing the model, you should seriously have a look at the blog entry created by Vi Hart and Nicky Case. Vi Hart produces amazing content and well worth following </p>
+<figure>
+<img src="files/vi_hart.png" width="45%;"/>
+<caption><br />
+Vi Hart and Nicky Case's Parable of the Polygons 
+<a href"https://ncase.me/polygons">https://ncase.me/polygons</a>
+</caption>
+</figure>
+
+<p>Finally, if you are interested in reading the original paper on this see <a href="https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf">Schelling, Thomas C. Dynamic Models of Segregation. Journal of Mathematical Sociology. 1971, Vol. 1, pp 143-186.</a></p>
+<h2>Implementation</h2>
+<p>The Schelling model traditionally talked about agents having different colours. I switched to state so my implementation is more similar to the Game of Life and Fire model. The <code>Agent</code> class has a <code>state</code> attribute that is either <code>JETS</code> or <code>SHARKS</code>. (I did now want to use <code>RED</code> and <code>BLUE</code>.)</p>
+<p>There are two differences between this model and the previous models:</p>
+<ul>
+<li>The first is that the agents are not updated simultaneously. Instead, we update the agents in a random order. This is because if we update the agents simultaneously, the model will never reach an equilibrium. </li>
+<li>The second difference is that the agents move. We will look at two versions of the model:<ul>
+<li>The first version is the traditional Schelling model where the agents are moved to a random empty cell.   </li>
+<li>The second version is where the agents are moved to a random cell that has at least one neighbour of the same state. This is because if we move the agents to a random empty cell, the model will be slower to reach an equilibrium.</li>
+</ul>
+</li>
+</ul>
+<p>To move an agent to a random empty location we can use the following code:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">move_to_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>to move an agent to a random location with at least one neighbour of the same state we could do something like the following:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>loop<span class="w"> </span>over,<span class="w"> </span>say<span class="w"> </span><span class="m">5</span>,<span class="w"> </span>attempts<span class="w"> </span>to<span class="w"> </span>place<span class="w"> </span>the<span class="w"> </span>agent
+<span class="w">    </span>move<span class="w"> </span>agent<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>random<span class="w"> </span>empty<span class="w"> </span>location
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>has<span class="w"> </span>at<span class="w"> </span>least<span class="w"> </span>one<span class="w"> </span>neighbour<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>same<span class="w"> </span>color
+<span class="w">        </span><span class="k">break</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Outline of core classes <code>Agent</code> and <code>Model</code></h2>
+<h3><code>Agent</code> class</h3>
+<ul>
+<li>store its <code>state</code> which is <code>JETS</code>, or <code>SHARKS</code>. This corresponds to the colour of the agent in the traditional Schelling model.</li>
+<li>has function, <code>get_neighbors</code> to return a list of all neighbours.</li>
+<li>has function, <code>is_happy</code> to check if the agent is happy.</li>
+<li>has function, <code>step</code> to compute its behaviour based on its <code>state</code> and the <code>state</code> of its neighbours.</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_happy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>The <code>Model</code> class</h3>
+<p>The <code>Model</code> class stores the model parameters, 
+the model geometry (space/grid), 
+and the agents in the model. </p>
+<p>The basic structure of this class is</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="c1"># store model parameters</span>
+
+        <span class="c1"># create the model space/grid</span>
+
+        <span class="c1"># create agents in the model</span>
+
+        <span class="c1"># setup data collector</span>
+
+        <span class="c1"># init simulation</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">shuffle_do</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>        
+</code></pre></div></td></tr></table></div>
+
+<h2>Implementing the Schelling Model</h2>
+<h3><code>Agent</code> class</h3>
+<p>The <code>get_neighbors</code> method:</p>
+<ul>
+<li>is the same as that used in the Game of Life or in the Fire model.</li>
+</ul>
+<p>The <code>is_happy</code> method:</p>
+<ul>
+<li>gets its list of neighbours</li>
+<li>counts the number of neighbours that have the same state as the agent</li>
+<li>checks if the agent is happy based on the proportion of neighbours that have the same state as the agent is at least as large as the model threshold parameter, <code>model.pr_same</code>.</li>
+</ul>
+<p>The <code>step</code> method:</p>
+<ul>
+<li>checks if the agent is happy</li>
+<li>if the agent is not happy, it moves to a random empty location, using <code>self.model.grid.move_to_empty</code> method.</li>
+</ul>
+<h3><code>Model</code> class</h3>
+<h4>Store model parameters</h4>
+<p>The <code>Model</code> class has parameters <code>width</code>, <code>height</code>, <code>density</code>, and <code>pr_same</code>. The <code>density</code> parameter is the proportion of cells that are occupied by agents. 
+The <code>pr_minority</code> is the size of the minority class, <code>JETS</code>, 
+and the <code>pr_same</code> parameter is the proportion of neighbours that need to have the same state as the agent for the agent to be happy.</p>
+<h4>Create the model space/grid</h4>
+<p>The model space is a <code>SingleGrid</code> with toroidal boundary conditions. This the same as that used in the Game of Life.</p>
+<h4>Create agents in the model</h4>
+<p>Creating the agents is done using a loop similar to the fire model by iterating over the grid locations and create an agent (with probability <code>density</code>). When creating agent we set its <code>state</code>to <code>JETS</code> based on <code>pr_minority</code>.</p>
+<h4>Init simulation</h4>
+<p>We will add stuff here later, when we add data collection facilities.</p>
+<h2>Visualisation</h2>
+<p>The visualisation and animation is practically the same as in the Fire Model, the only addition is the letter <code>X</code> for agents that are not happy.</p>
+<h2>Data Collector</h2>
+<p>The mesa library has a <code>DataCollector</code> class that can be used to collect data during the simulation. We will add a data collector to collect the number of happy agents at each step. This will allow us to plot the number of happy agents over time.</p>
+<h3>Adding <code>running</code> flag to <code>Model</code> class</h3>
+<ul>
+<li>
+<p>In <code>Model.__init__</code>, in "# start simulation" section we set <code>running</code> flag to <code>True</code>, to indicate that the model is still running. This flag will be set to <code>False</code> when there are no unhappy agents.</p>
+</li>
+<li>
+<p>In <code>Model.step</code> we first check to see if the model is still running, if not we return immediately. Otherwise we perform the model step. Then check if there are any unhappy agents, if not we set the <code>running</code> flag to <code>False</code>.</p>
+</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="p">:</span> <span class="k">return</span> 
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">shuffle_do</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">is_happy</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="p">])</span><span class="o">&gt;</span><span class="mi">0</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Now, with <code>running</code> flag implemented we can run a simulation as follows</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">667</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">model</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Adding <code>move</code> counter variable to <code>Model</code> class</h3>
+<p>Instead of (or in addition to) counting the number of unhappy agents at each step, we can add a counter variable to the <code>Model</code> class that is incremented each time an agent is moves. This counter is reset at start of each <code>Model.step</code> call. So:</p>
+<ul>
+<li>
+<p>In <code>Model.__init__</code>, in "# start simulation" section we set <code>moved</code> counter to zero.</p>
+</li>
+<li>
+<p>In <code>Model.step</code> we first reset the <code>moved</code> counter to zero. </p>
+</li>
+<li>Then we increment the counter each time an agent is moved, inside the <code>Agent.step</code> method.</li>
+<li>We set the <code>running</code> flag to <code>False</code>, when <code>moved</code> is zero at end of the step. So simulation stops when no agents are moved instead of when no agents are unhappy. So we use</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moved</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Setting up the data collector</h3>
+<p>To use the <code>DataCollector</code> class, we create an instance of it in the <code>Model.__init__</code> method. Where we list the information we want to collect. We can use the <code>DataCollector</code> to collect the number of steps, the number of agents that have moved, and the number of unhappy agents at each step.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="bp">self</span><span class="o">.</span><span class="n">datacollector</span> <span class="o">=</span> <span class="n">mesa</span><span class="o">.</span><span class="n">DataCollector</span><span class="p">(</span>
+        <span class="n">model_reporters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="s2">&quot;steps&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;moved&quot;</span><span class="p">:</span> <span class="s2">&quot;moved&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;unhappy&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">agents</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">is_happy</span><span class="p">()),</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Then in <code>Model.__init__</code> we add the following line to collect the data:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>        <span class="bp">self</span><span class="o">.</span><span class="n">datacollector</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Finally, in the <code>Model.step</code> method we add the following line to collect the data at each step:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>        <span class="bp">self</span><span class="o">.</span><span class="n">datacollector</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Getting data from the data collector</h3>
+<p>The <code>DataCollector</code> class collects the data in a <code>pandas</code> DataFrame. We can access the data using the <code>get_model_vars_dataframe</code> method. This method returns a DataFrame with the data collected.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="n">df</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">datacollector</span><span class="o">.</span><span class="n">get_model_vars_dataframe</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">steps&nbsp;&nbsp;</th>
+<th style="text-align: right;">moved&nbsp;&nbsp;</th>
+<th style="text-align: right;">unhappy&nbsp;&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">13</td>
+</tr>
+</tbody>
+</table>
+<h3>Plotting the data</h3>
+<p>We can plot the data using the <code>matplotlib</code> library. For example, we can plot the number of unhappy agents and the number moved over time using the following code:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">unhappy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;unhappy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">moved</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;moved&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agents behaviour step (pop=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">agents</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This will produce a plot similar to the following:</p>
+<p><img alt="" src="files/unhappy_and_moved.png" /></p>
+<h2>Batch Running</h2>
+<p>The mesa library also has a <code>BatchRunner</code> class that can be used to run multiple simulations with different parameters. 
+For example, we can use the <code>BatchRunner</code> to run the Schelling model with different values of the <code>density</code> parameter. So we could write </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>and then run the simulations using the <code>BatchRunner</code> class using:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="n">mesa</span><span class="o">.</span><span class="n">batchrunner</span><span class="o">.</span><span class="n">batch_run</span><span class="p">(</span>
+        <span class="n">Model</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">iterations</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">max_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">display_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This code creates a DataFrame with the results of the simulations. The DataFrame has a row for each simulation and a column for each parameter and model variable that was collected.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">RunId&nbsp;&nbsp;</th>
+<th style="text-align: right;">iteration&nbsp;&nbsp;</th>
+<th style="text-align: right;">Step&nbsp;&nbsp;</th>
+<th style="text-align: right;">width&nbsp;&nbsp;</th>
+<th style="text-align: right;">height&nbsp;&nbsp;</th>
+<th style="text-align: right;">density&nbsp;&nbsp;</th>
+<th style="text-align: right;">steps&nbsp;&nbsp;</th>
+<th style="text-align: right;">moved&nbsp;&nbsp;</th>
+<th style="text-align: right;">unhappy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>We could generate a boxplot of the number of steps in the simulation by density using the following code:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">df</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s1">&#39;steps&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">)</span>
+
+<span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">+</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">nunique</span><span class="p">())]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.2</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>  <span class="n">df</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">unique</span><span class="p">()]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Number of steps in simulation by density&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This will produce a plot similar to the following:</p>
+<p><img alt="" src="files/steps_by_density.png" /></p>
+<p>As the population density increases the number of steps in the simulation needed before agents are all happy increases. </p>
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="02-Fire_Model.html">&larr; Previous (Fire Model)</a></li>
+			
+			
+			
+			<li class="next"><a href="05-MESA_Code_Segments.html">Next (MESA Code Segments) &rarr;</a></li>
+			
+		</ul>
+
+	</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../../style/bootstrap/js/bootstrap.min.js"></script>
+	
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computational Physics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../../style/codehilite/css/default.css" rel="stylesheet">
+    <link href="../../../style/misc/css/module.css" rel="stylesheet">
+    <link href="../../../style/misc/css/practical.css" rel="stylesheet">
+
+	<script type="text/javascript"
+	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+  </head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			
+			
+	    	<div class="collapse navbar-collapse">
+
+				<ul class="nav navbar-nav navbar-left">
+					<!-- Moodle -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.setu.ie/course/view.php?id=217744" target="_blank"><img height="18pt" src="../../../style/misc/img/moodle_logo_on_blue.gif" /></a>
+						</div>						
+					</li>
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://computational-jhw6794.slack.com" target="_blank"><img height="15pt" src="../../../style/misc/img/slack_logo.png" /></a>
+						</div>						
+					</li>
+				</ul>
+
+	      		<ul class="nav navbar-nav navbar-right">
+
+					<!-- module home -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../../../index.html"><span class="glyphicon glyphicon-home"></span></a>
+						</div>						
+					</li>
+					
+					<!-- topics -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-list-alt"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Topics</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+					<!-- resources -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-th-list"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Resources</li>
+										
+										<li >
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#01-Introduction_to_Mesa">Introduction to Mesa</a>
+										</li>
+										
+										<li class="active">
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#02-SIR_Models">SIR Models</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+								
+					<!-- pages-->
+	        		<li>
+						<div class="navbar-collapse collapse" id="c">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span>End of Men Model</span
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										
+										<li >
+											<a href="00-Outline.html">Outline</a>
+										</li>
+										
+										<li >
+											<a href="01-Continuous_Model.html">Continuous Model</a>
+										</li>
+										
+										<li >
+											<a href="02-Agent_Based_Model.html">Agent Based Model</a>
+										</li>
+										
+										<li class="active">
+											<a href="03-End_of_Men_Model.html">End of Men Model</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li> 
+					
+	        	</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- contents -->
+	<div class="container">
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="02-Agent_Based_Model.html">&larr; Previous (Agent Based Model)</a></li>
+			
+			
+			
+			<li class="next disabled"><a>Next &rarr;</a></li>
+			
+		</ul>
+		
+		<h1>End of Men Model</h1>
+<p>OK, so now you are going to extend both the continuous and agent based model of the SIRD to and fictional disease.</p>
+<p>I mentioned that I recently read <em>The End of Men</em> by Christina Sweeney-Baird which describes a new virus that only killed males. I want you to build a SIR type  model to represent the disease spread as described in the book.</p>
+<p>The book does not describe every detail of the disease spread so I have to make some guesses based on the text. And have intentionally left things vague so you will need to make some modelling decisions yourselves.</p>
+<ul>
+<li>Population is 50 million (Britten only).</li>
+<li>Population is 50% female / 50% male.</li>
+<li>Females when infected become carriers of the virus but are otherwise unaffected and recover in about two weeks, they do not develop immunity.</li>
+<li>Males when infected have a 90% mortality rate and typically die within a week.</li>
+<li>Males that survive the infection typically recover in a week and appear to have life time immunity.</li>
+<li>The disease spread is described as "very contagious" and "spreads like wildfire", so assuming R_0 is high, say about 20.0.</li>
+</ul>
+<h1>Task 5</h1>
+<p>Create a new notebook called <code>End_of_Men_Model.ipynb</code> to implement this model.  You will have a lot of code in common with your <code>SIR_Models.ipynb</code> notebook, but using a separate notebook will help grading.</p>
+<p>In notebook <code>End_of_Men_Model.ipynb</code> implement both the continuous and the Agent based model representing the spread of this disease.</p>
+<p>For the continuous model: </p>
+<p>Construct the ODE system representing your model, then determine suitable parameters for the model and plot the model curves showing the infection progression. What is the number of infected and the number of deaths?</p>
+<p>For the discrete (agent based) model: </p>
+<ul>
+<li>
+<p>You will need to either add another variable to <code>Agent</code> to represent gender or have more values for <code>state</code>, i.e, <code>INFECTED_MALE</code> etc.</p>
+</li>
+<li>
+<p>Only the infected males will show symptoms so only they will isolate. Is this disease worse because it only affect males? </p>
+</li>
+</ul>
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="02-Agent_Based_Model.html">&larr; Previous (Agent Based Model)</a></li>
+			
+			
+			
+			<li class="next disabled"><a>Next &rarr;</a></li>
+			
+		</ul>
+
+	</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../../style/bootstrap/js/bootstrap.min.js"></script>
+	
+  </body>
+</html>

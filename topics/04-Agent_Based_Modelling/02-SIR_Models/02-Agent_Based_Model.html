@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computational Physics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../../style/codehilite/css/default.css" rel="stylesheet">
+    <link href="../../../style/misc/css/module.css" rel="stylesheet">
+    <link href="../../../style/misc/css/practical.css" rel="stylesheet">
+
+	<script type="text/javascript"
+	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+  </head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			
+			
+	    	<div class="collapse navbar-collapse">
+
+				<ul class="nav navbar-nav navbar-left">
+					<!-- Moodle -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.setu.ie/course/view.php?id=217744" target="_blank"><img height="18pt" src="../../../style/misc/img/moodle_logo_on_blue.gif" /></a>
+						</div>						
+					</li>
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://computational-jhw6794.slack.com" target="_blank"><img height="15pt" src="../../../style/misc/img/slack_logo.png" /></a>
+						</div>						
+					</li>
+				</ul>
+
+	      		<ul class="nav navbar-nav navbar-right">
+
+					<!-- module home -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../../../index.html"><span class="glyphicon glyphicon-home"></span></a>
+						</div>						
+					</li>
+					
+					<!-- topics -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-list-alt"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Topics</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+					<!-- resources -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-th-list"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Resources</li>
+										
+										<li >
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#01-Introduction_to_Mesa">Introduction to Mesa</a>
+										</li>
+										
+										<li class="active">
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#02-SIR_Models">SIR Models</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+								
+					<!-- pages-->
+	        		<li>
+						<div class="navbar-collapse collapse" id="c">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span>Agent Based Model</span
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										
+										<li >
+											<a href="00-Outline.html">Outline</a>
+										</li>
+										
+										<li >
+											<a href="01-Continuous_Model.html">Continuous Model</a>
+										</li>
+										
+										<li class="active">
+											<a href="02-Agent_Based_Model.html">Agent Based Model</a>
+										</li>
+										
+										<li >
+											<a href="03-End_of_Men_Model.html">End of Men Model</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li> 
+					
+	        	</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- contents -->
+	<div class="container">
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="01-Continuous_Model.html">&larr; Previous (Continuous Model)</a></li>
+			
+			
+			
+			<li class="next"><a href="03-End_of_Men_Model.html">Next (End of Men Model) &rarr;</a></li>
+			
+		</ul>
+		
+		<h1>Agent Based Model</h1>
+<h2>Background</h2>
+<p>The agent based model implementation of SIR divides the population in three components &mdash; as in the continuous model &mdash; Susceptible, Infected, and Recovered. In the agent based model the component is represented as the <code>Agent.state</code>.</p>
+<p>Each individual is represented as an agent and the state of each agent changes over time based on the interactions between agents:</p>
+<ul>
+<li>The world contains a discrete spatial grid with wraparound geometry (as in Game of Life).</li>
+<li>Multiple agents can be in the same grid location, so use <code>mesa.space.MultiGrid</code>, instead of <code>mesa.space.SingleGrid</code>.</li>
+<li>Agents are placed randomly on the grid, with at most one in each grid location, with probability <code>density</code>.  (Later in the simulation, as agents move there can be multiple agents in a single location.)</li>
+<li>Agents have <code>state</code> of <code>SUSCEPTIBLE</code>, <code>INFECTED</code>, or <code>RECOVERED</code>.</li>
+<li>Agents have a <code>get_neighborhood</code> method that returns the list of neighbouring cells.</li>
+<li>Agents have a <code>step</code> method that implements the following rules:<ul>
+<li>If an agent is <code>INFECTED</code>, it will infect any susceptible agents in the same location with probability <code>pr_infect</code>.</li>
+<li>If an agent is <code>INFECTED</code>, it will recover with probability <code>pr_recover</code>.</li>
+<li>Agents move, with probability <code>pr_move</code>, to a random neighbouring cell each step.</li>
+</ul>
+</li>
+</ul>
+<h2>Outline of core classes <code>Agent</code> and <code>Model</code></h2>
+<h3><code>Agent</code> class</h3>
+<ul>
+<li>stores the <code>state</code> of <code>SUSCEPTIBLE</code>, <code>INFECTED</code>, or <code>RECOVERED</code>.</li>
+<li>has function, <code>get_neighborhood</code> to return a list of all neighboring cells.</li>
+<li>has function, <code>step</code> to compute its behaviour based on its <code>state</code> and the <code>state</code> of its neighbours.</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+
+    <span class="n">SUSCEPTIBLE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">INFECTED</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">RECOVERED</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>The <code>Model</code> class</h3>
+<p>The <code>Model</code> class stores the model parameters, 
+the model geometry (space/grid), 
+and the agents in the model.</p>
+<p>The basic structure of this class is</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="c1"># store model parameters</span>
+
+        <span class="c1"># create the model space/grid</span>
+
+        <span class="c1"># create agents in the model</span>
+
+        <span class="c1"># setup data collection</span>
+
+        <span class="c1"># start simulation</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>   
+</code></pre></div></td></tr></table></div>
+
+<h2>Implementing the SIR Model</h2>
+<h3><code>Agent</code> class</h3>
+<p>The <code>get_neighborhood</code> method:</p>
+<ul>
+<li>This is similar the <code>get_neighbors</code> method defined in the Game of Life and other models, but calls the method <code>grid.get_neighborhood</code> in place of <code>grid.get_neighbors</code>.
+What is the difference? Well <code>get_neighbors</code> returns a list of agents in the neighbourhood, while <code>get_neighborhood</code> returns a list of grid locations in the neighbourhood. We need to locations to pick one to move to when updating.</li>
+</ul>
+<p>The <code>step</code> method has the following rules:</p>
+<ul>
+<li>
+<p>The agent moves to a random neighbouring cell with probability <code>pr_move</code>. To do this:</p>
+<ul>
+<li>use <code>model.pr_move</code> to determine if the agent should move.</li>
+<li>get the list of neighbouring cells using <code>self.get_neighborhood</code>.</li>
+<li>pick a random destination cell from the list of neighbouring cells, using <code>np.choice</code>.</li>
+<li>move the agent to the destination cell.</li>
+</ul>
+</li>
+<li>
+<p>If an agent is <code>INFECTED</code>, then it can infect each <code>SUSCEPTIBLE</code> agents in the same location (if they exist) with probability <code>pr_infect</code>.</p>
+</li>
+<li>
+<p>If an agent is <code>INFECTED</code>, then it can recover with probability <code>pr_recover</code>. </p>
+</li>
+</ul>
+<p>We could implement these rules fully, but instead  we will implement them step by step and examine progress.</p>
+<h3>The <code>Model</code> class</h3>
+<p>This is implemented along similar lines to the Fire Model or the Schelling Model:</p>
+<p>In <code>Model.__init__</code>:</p>
+<ul>
+<li>Replace <code>SingleGrid</code> with <code>MutliGrid</code></li>
+<li>Add agents (default state is <code>SUSCEPTIBLE</code>)</li>
+<li>Pick one random agent to be <code>INFECTED</code>.</li>
+</ul>
+<p>In <code>Model.step</code>:</p>
+<ul>
+<li>Same as in the Schelling Model (where all agents are updated in random order).</li>
+</ul>
+<h3>Visualisation</h3>
+<p>To start, the function <code>draw_model</code> is near identical to the Schelling Model function. use
+colours and labels:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Susceptible&#39;</span><span class="p">,</span> <span class="s1">&#39;Infected&#39;</span><span class="p">,</span> <span class="s1">&#39;Recovered&#39;</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Then creating a model and displaying it using</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">666</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">draw_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>should result in the following</p>
+<p><img alt="" src="files/model_ver_0.png" /></p>
+<p>This is OK, but what happens when multiple agents are in the same grid location? How can we see multiple agents since we will only see the last one drawn.</p>
+<p>There are a number of fixes for this. The easiest of these is to draw smaller agents and give each agent a random offset (from the centre). This works, but we want to be careful of two things:</p>
+<ul>
+<li>We do not want any randomness used in the visualisation to affect the randomness in the simulation. You should think about why this is not desirable.</li>
+<li>We want the random offset for the agents to be constant for the duration of the simulation - otherwise the agents will be jumping around within a grid location even when that are not moving grid locations.</li>
+</ul>
+<p>There is a solution to both of these issues:</p>
+<ul>
+<li>In <code>Model._init__</code> create a separate random number generator that will be only used for visualisation. Here I used <code>default_rng</code> which I imported from <code>numpy.random</code>.</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">default_rng</span><span class="p">(</span><span class="mi">666</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>When creating an agent, in <code>Agent.__init__</code> give it a random offset</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>In <code>draw_model</code>, change the radius to 0.2 and change <code>pos</code> from </li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="n">pos</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+
+<p>to</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="n">pos</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="n">agent</span><span class="o">.</span><span class="n">offset</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This results in the following</p>
+<p><img alt="" src="files/model_ver_1.png" /></p>
+<h3>Implementing <code>Agent</code> update rules in separate versions</h3>
+<h4>Version 1 &mdash; <code>INFECTED</code> agent movement</h4>
+<p>Add movement to the agent that is <code>INFECTED</code> only. Use grid method <code>move_agent</code>.</p>
+<p>By moving just the single <code>INFECTED</code> agent it is easier to verify that the correct behaviour is implemented.</p>
+<p>TEST: When you run simulation only the <code>INFECTED</code> agent show move and only move from grid location to neighbouring grid location.</p>
+<h4>Version 2 &mdash; all agent movement</h4>
+<p>Now modify the <code>agent.step</code> method so that all agents move.</p>
+<p>TEST: Now all agents should be moving. Lower <code>density</code> value so easier to track each agent to verify movement.</p>
+<h4>Version 3 &mdash; disease spread</h4>
+<p>When updating an <code>INFECTED</code> agent we need to see if they infect any <code>SUSCEPTIBLE</code> agents who are sharing their current grid location. To do this:</p>
+<ul>
+<li>We need grid method <code>get_cell_list_contents</code> which returns a list of agents in the specified grid location.</li>
+<li>Iterate over the list of agents and infect any that are <code>SUSCEPTIBLE</code> with probability <code>py_infect</code>.</li>
+</ul>
+<p>TEST: Now infection should spread as agents move around the grid.</p>
+<h4>Version 4 &mdash; recover from disease</h4>
+<p>An infected agent recovers with probability <code>pr_recover</code>, changing state from <code>INFECTED</code> to <code>RECOVERED</code>.</p>
+<p>TEST: Now infection should spread but over time the infected are replaced by recovered.</p>
+<p><strong>NOTE: Finally check the order of your actions in <code>agent.step</code> we want the move to be the last action carried out.</strong></p>
+<h2>Data Collection</h2>
+<p>Next add the data collection (similar to Fire Model and Schelling Model). And generate plots similar to the fire model to investigate the impact of the model parameters 
+<code>pr_infect</code> and <code>pr_recover</code>. These parameters play a similar role to the Fire model parameters <code>pr_spread</code> and <code>pr_burnout</code>, and play a similar role to the continuous SIR model parameters <code>beta</code> and <code>gamma</code>.</p>
+<h1>Task 2</h1>
+<p>Generate generate plots similar to the fire model to investigate the impact of the model parameters.</p>
+<h1>Task 3</h1>
+<p>Modify the model so that it includes state <code>DEAD</code>. This gives use the SIRD model and is implemented using:</p>
+<ul>
+<li>New state <code>DEAD</code>.</li>
+<li>New model parameter <code>pr_die</code>. Agents that are infected now recover with probability
+<code>pr_recover*(1-pr_die)</code> and die with probability 
+<code>pr_recover*pr_die</code>.  This is so the parameters <code>pr_die</code> works similar to the parameter <code>mu</code> in the continuous SIRD model (Task 1). </li>
+<li>A <code>DEAD</code> agent does not die and the simplest approach is not display them in <code>draw_model</code>.</li>
+</ul>
+<h1>Task 4</h1>
+<p>One advantage of the agent based model approach for disease spread is that it is easy to add effects of social distancing.  One approach is to add another parameter, say <code>pr_isolate</code>, which when <code>state</code> is <code>INFECTED</code> the agent does not move with probability <code>pr_isolate</code>. This probability check is applied inside the probability check <code>self.random.random()&lt;self.model.pr_move</code>.</p>
+<p>Then using data collector and batch runner generate plots to show the impact of <code>pr_isolate</code>. </p>
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="01-Continuous_Model.html">&larr; Previous (Continuous Model)</a></li>
+			
+			
+			
+			<li class="next"><a href="03-End_of_Men_Model.html">Next (End of Men Model) &rarr;</a></li>
+			
+		</ul>
+
+	</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../../style/bootstrap/js/bootstrap.min.js"></script>
+	
+  </body>
+</html>

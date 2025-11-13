@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computational Physics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../../style/codehilite/css/default.css" rel="stylesheet">
+    <link href="../../../style/misc/css/module.css" rel="stylesheet">
+    <link href="../../../style/misc/css/practical.css" rel="stylesheet">
+
+	<script type="text/javascript"
+	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+  </head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			
+			
+	    	<div class="collapse navbar-collapse">
+
+				<ul class="nav navbar-nav navbar-left">
+					<!-- Moodle -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://moodle.setu.ie/course/view.php?id=217744" target="_blank"><img height="18pt" src="../../../style/misc/img/moodle_logo_on_blue.gif" /></a>
+						</div>						
+					</li>
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="https://computational-jhw6794.slack.com" target="_blank"><img height="15pt" src="../../../style/misc/img/slack_logo.png" /></a>
+						</div>						
+					</li>
+				</ul>
+
+	      		<ul class="nav navbar-nav navbar-right">
+
+					<!-- module home -->
+					<li>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="../../../index.html"><span class="glyphicon glyphicon-home"></span></a>
+						</div>						
+					</li>
+					
+					<!-- topics -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-list-alt"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Topics</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+
+					<!-- resources -->
+	        		<li>
+						<div class="navbar-collapse collapse" id="b">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-th-list"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="dropdown-header">Resources</li>
+										
+										<li class="active">
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#01-Introduction_to_Mesa">Introduction to Mesa</a>
+										</li>
+										
+										<li >
+											<a href="../../../topics/04-Agent_Based_Modelling/index.html#02-SIR_Models">SIR Models</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li>
+								
+					<!-- pages-->
+	        		<li>
+						<div class="navbar-collapse collapse" id="c">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<span>Fire Model</span
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										
+										<li >
+											<a href="00-Outline.html">Outline</a>
+										</li>
+										
+										<li >
+											<a href="01-Game_of_Life.html">Game of Life</a>
+										</li>
+										
+										<li class="active">
+											<a href="02-Fire_Model.html">Fire Model</a>
+										</li>
+										
+										<li >
+											<a href="03-Schelling_Model_of_Segregation.html">Schelling Model of Segregation</a>
+										</li>
+										
+										<li >
+											<a href="05-MESA_Code_Segments.html">MESA Code Segments</a>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+						</div>			
+					</li> 
+					
+	        	</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- contents -->
+	<div class="container">
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="01-Game_of_Life.html">&larr; Previous (Game of Life)</a></li>
+			
+			
+			
+			<li class="next"><a href="03-Schelling_Model_of_Segregation.html">Next (Schelling Model of Segregation) &rarr;</a></li>
+			
+		</ul>
+		
+		<h1>Fire Model</h1>
+<h2>Background</h2>
+<p>The Fire model is a simple model that simulates the spread of a fire through a forest. The forest is represented as a grid of cells, which may be empty. In terms of agent-based modelling, the </p>
+<ul>
+<li>
+<p><code>Agent</code> represents each tree in the forest, and the state of the agent is one of three possibilities: <code>BURNABLE</code>, <code>BURNING</code>, or <code>BURNT</code>.</p>
+</li>
+<li>
+<p><code>Model</code> represents the forest itself, and the model is initialized with a certain density of trees. At each step of the simulation, the fire can spread from a burning tree to neighbouring trees.</p>
+</li>
+</ul>
+<p>For background on this model see the paper <a href="files/Fire_Model_-_paper.pdf">https://www.researchgate.net/publication/256662471_A_Cellular_Automata_Mo
+del_for_Fire_Spreading_Prediction</a></p>
+<h2>Implementation</h2>
+<p>This implementation is very similar to Game of Life, with the following differences:</p>
+<ul>
+<li>The <code>Model</code> grid is finite with boundaries (so <code>torus=False</code>).</li>
+<li>In the Game of Life every grid location contained an agent, <code>Cell</code>.
+In the Fire model, only some grid locations contain an agent, <code>Tree</code>. </li>
+<li>The <code>Tree</code> agent has a state that can be <code>BURNABLE</code>, <code>BURNING</code>, or <code>BURNT</code>.</li>
+<li>The <code>Model.step</code> should perform simultaneous update (similar to Game of Life).</li>
+</ul>
+<h2>Outline of core classes <code>Agent</code> / <code>Tree</code> and <code>Model</code> / <code>Forest</code></h2>
+<h3><code>Agent</code> / <code>Tree</code> class</h3>
+<ul>
+<li>store its <code>state</code> which is <code>BURNABLE</code>, <code>BURNING</code>, or <code>BURNT</code>.</li>
+<li>has function, <code>get_neighbors</code> to return a list of all neighbours.</li>
+<li>has function, <code>compute_step</code> to compute the update, to <code>state</code>, needed in the next step.</li>
+<li>has function, <code>step</code> to apply the update (that was computed in <code>compute_step</code>).</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Tree</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>The <code>Model</code> / <code>Forest</code> class</h3>
+<p>The <code>Model</code> / <code>Forest</code> class stores the model parameters,
+the model geometry (space/grid),
+and the agents in the model.</p>
+<p>The basic structure of this class is</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Forest</span><span class="p">(</span><span class="n">mesa</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="c1"># store model parameters</span>
+
+        <span class="c1"># create the model space/grid</span>
+
+        <span class="c1"># create agents in the model</span>
+
+        <span class="c1"># setup data collector</span>
+
+        <span class="c1"># init simulation</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="s2">&quot;compute_step&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Implementing the Fire Model</h2>
+<h3><code>Agent</code> / <code>Tree</code> class</h3>
+<h3><code>Model</code> / <code>Forest</code> class</h3>
+<h4>Store model parameters</h4>
+<p>The <code>Model</code> / <code>Forest</code> class has parameters <code>width</code>, <code>height</code>, <code>density</code>, <code>pr_spread</code>, and <code>pr_burnout</code>. </p>
+<ul>
+<li>Parameters <code>width</code> and <code>height</code> are stored in <code>grid</code> so do not need to store them explicitly. </li>
+<li>Parameter <code>density</code> is only used in <code>__init__</code> method, when adding agents, so we do not need to store that also.</li>
+<li>Parameters <code>pr_spread</code> and <code>pr_burnout</code> and needed during the simulation so are stored using </li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="bp">self</span><span class="o">.</span><span class="n">pr_spread</span> <span class="o">=</span> <span class="n">pr_spread</span>
+</code></pre></div></td></tr></table></div>
+
+<h4>Create the model space/grid</h4>
+<p>The model space is a <code>SingleGrid</code> with non-toroidal boundary conditions, i.e., <code>torus=False</code>. </p>
+<h4>Create agents in the model</h4>
+<p>Create the agents/trees by iterating over the grid locations and create an agent (with probability <code>density</code>). An agent/tree has default state of <code>BURNABLE</code></p>
+<h4>Init simulation</h4>
+<p>We will add stuff here later, when we add data collection facilities.</p>
+<h2>Visualisation</h2>
+<h2>Data Collector</h2>
+<p>The mesa library has a <code>DataCollector</code> class that can be used to collect data during the simulation. We will add a data collector to collect the number agents in each state at each step. This will allow us to plot progression of the fire over time.</p>
+<h3>Adding <code>running</code> flag to <code>Model</code> class</h3>
+<ul>
+<li>
+<p>In <code>Model.__init__</code>, in "# init simulation" section we set <code>running</code> flag to <code>True</code>, to indicate that the simulation is still running. This flag will be set to <code>False</code> when there are no agents/trees with state <code>BURNING</code>.</p>
+</li>
+<li>
+<p>In <code>Model.step</code> we wrap the existing update code by first checking to see if the model is still running, if not we return immediately. And after the existing update code we check if the simulation has ended (i.e. there are no more <code>BURNABLE</code> trees):</p>
+</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code>    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="p">:</span> <span class="k">return</span> 
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="s2">&quot;compute_step&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+
+        <span class="n">n_burning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_state</span><span class="p">(</span><span class="n">Tree</span><span class="o">.</span><span class="n">BURNING</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_burning</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Setting up the data collector</h3>
+<p>To use the <code>DataCollector</code> class, we create an instance of it in the <code>Model.__init__</code> method. Where we list the information we want to collect. </p>
+<h3>Getting data from the data collector</h3>
+<h3>Plotting the data</h3>
+<h2>Batch Running</h2>
+		
+		<ul class="pager">
+			
+			<li class="previous"><a href="01-Game_of_Life.html">&larr; Previous (Game of Life)</a></li>
+			
+			
+			
+			<li class="next"><a href="03-Schelling_Model_of_Segregation.html">Next (Schelling Model of Segregation) &rarr;</a></li>
+			
+		</ul>
+
+	</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../../style/bootstrap/js/bootstrap.min.js"></script>
+	
+  </body>
+</html>
